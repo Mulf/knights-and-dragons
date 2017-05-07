@@ -30,9 +30,9 @@ var enemy;
 var win;
 var loss;
 
-var Level2 = function(game) {};
+var level2 = function(game) {};
 
-Level2.prototype = {
+level2.prototype = {
 
 	preload: function() {
 		game.load.baseURL = 'https://storage.googleapis.com/bytehunter_images/testfiles/';

@@ -52,7 +52,7 @@ Main.prototype = {
 		game.load.image('loss', 'https://storage.googleapis.com/bytehunter_images/testfiles/loss-msg.png');
 
 		// next level
-		game.load.script('Level2', 'js/Level2.js');
+		game.load.script('level2', 'js/level2.js');
 	},
 	
 	create: function () {
@@ -86,7 +86,7 @@ Main.prototype = {
 		enemy.width = 100;
 		enemy.height = 100;
 		
-		game.state.add("Level2", Level2);
+		game.state.add("level2", level2);
 	},
 
 	onOver: function(sprite, pointer) {
@@ -120,7 +120,7 @@ Main.prototype = {
 	},
 
 	nextLevel:function(event){
-		game.state.start("Level2");	
+		game.state.start("level2");	
 	},
 	
 	setToDragable:function(sprite) {
