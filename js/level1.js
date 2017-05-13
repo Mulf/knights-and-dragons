@@ -22,16 +22,11 @@ var enemy;
 var win;
 var loss;
 
-
 var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game'),
-Main = function () {},
-gameOptions = {
-	playSound: true,
-	playMusic: true
-},
-musicPlayer;
 
-Main.prototype = {
+level1 = function () {};
+
+level1.prototype = {
 	preload: function() {
 		game.load.crossOrigin = 'anonymous';
 		game.load.image('background', 'https://storage.googleapis.com/bytehunter_images/testfiles/kl-background.png');
@@ -97,7 +92,7 @@ Main.prototype = {
 		sprite.tint = 0xffffff;
 	},
 
-	onGateClick:function (sprite) {
+	onGateClick: function (sprite) {
 		var spriteDup = game.add.sprite(sprite.x + 10, sprite.y + 10, sprite.key, sprite.frame);
 		spriteDup.width = blkWidth;
 		spriteDup.height = blkHeight;
@@ -119,11 +114,11 @@ Main.prototype = {
 		}
 	},
 
-	nextLevel:function(event){
+	nextLevel: function(event){
 		game.state.start("level2");	
 	},
 	
-	setToDragable:function(sprite) {
+	setToDragable: function(sprite) {
 		sprite.inputEnabled = true;
 		sprite.input.enableDrag();
 
@@ -176,5 +171,5 @@ Main.prototype = {
 	}
 };
 
-game.state.add("Main",Main);
-game.state.start("Main");
+game.state.add("level1", level1);
+game.state.start("level1");

@@ -149,7 +149,7 @@ level2.prototype = {
 		}
 	},
 
-	setToDragable:function(sprite) {
+	setToDragable: function(sprite) {
 		sprite.inputEnabled = true;
 		sprite.input.enableDrag();
 
