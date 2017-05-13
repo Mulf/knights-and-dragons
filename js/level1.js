@@ -9,8 +9,6 @@ var zero;
 
 var blkWidth = 100;
 var blkHeight = 100;
-var characterWidth = 30;
-var characterHeight = 30;
 
 var dropZone;
 var dragPosition;
@@ -22,35 +20,14 @@ var enemy;
 var win;
 var loss;
 
-var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game'),
-
-level1 = function () {};
+level1 = function(game) {};
 
 level1.prototype = {
 	preload: function() {
-		game.load.crossOrigin = 'anonymous';
-		game.load.image('background', 'https://storage.googleapis.com/bytehunter_images/testfiles/kl-background.png');
-		game.load.image('buffer-gate', 'https://storage.googleapis.com/bytehunter_images/testfiles/kl-buffer-gate.png');
-		game.load.image('not-gate', 'https://storage.googleapis.com/bytehunter_images/testfiles/kl-not-gate.png');
-		game.load.image('white-block', 'https://storage.googleapis.com/bytehunter_images/testfiles/white.png');
-
-		game.load.image('kl-zero', 'https://storage.googleapis.com/bytehunter_images/testfiles/kl-zero.png');
-		game.load.image('kl-one', 'https://storage.googleapis.com/bytehunter_images/testfiles/kl-one.png');
-
-		game.load.image('white-knight', 'https://storage.googleapis.com/bytehunter_images/testfiles/kl-white-knight.png');
-		game.load.image('black-knight', 'https://storage.googleapis.com/bytehunter_images/testfiles/kl-black-knight.png');
-
-		game.load.image('white-dragon', 'https://storage.googleapis.com/bytehunter_images/testfiles/kl-white-dragon.png');
-		game.load.image('black-dragon', 'https://storage.googleapis.com/bytehunter_images/testfiles/kl-black-dragon.png');
-
-		game.load.image('win', 'https://storage.googleapis.com/bytehunter_images/testfiles/win-msg.png');
-		game.load.image('loss', 'https://storage.googleapis.com/bytehunter_images/testfiles/loss-msg.png');
-
-		// next level
-		game.load.script('level2', 'js/level2.js');
+		
 	},
 	
-	create: function () {
+	create: function() {
 		background = game.add.sprite(0, 0, 'background');
 		background.width = 800;
 		background.height = 600;
@@ -80,8 +57,6 @@ level1.prototype = {
 		enemy = game.add.sprite(650, 250, 'black-dragon');
 		enemy.width = 100;
 		enemy.height = 100;
-		
-		game.state.add("level2", level2);
 	},
 
 	onOver: function(sprite, pointer) {
@@ -92,14 +67,14 @@ level1.prototype = {
 		sprite.tint = 0xffffff;
 	},
 
-	onGateClick: function (sprite) {
+	onGateClick: function(sprite) {
 		var spriteDup = game.add.sprite(sprite.x + 10, sprite.y + 10, sprite.key, sprite.frame);
 		spriteDup.width = blkWidth;
 		spriteDup.height = blkHeight;
 		this.setToDragable(spriteDup);
 	},
 
-	onDragStart: function (sprite, pointer) {
+	onDragStart: function(sprite, pointer) {
 		dragPosition.set(sprite.x, sprite.y);
 	},
 
@@ -134,7 +109,7 @@ level1.prototype = {
 		if ((result.key == "white-knight" && enemy.key == "white-dragon") || (result.key == "black-knight" && enemy.key == "black-dragon")) {
 			win = game.add.sprite(400, 300, 'win');
 			win.anchor.setTo(0.5, 0.5);
-			
+			// if win, go to the next level
 			game.input.onDown.add(this.nextLevel, this);
 		} else {
 			loss = game.add.sprite(400, 300, 'loss');
@@ -170,6 +145,3 @@ level1.prototype = {
 
 	}
 };
-
-game.state.add("level1", level1);
-game.state.start("level1");

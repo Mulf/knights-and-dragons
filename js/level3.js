@@ -30,9 +30,9 @@ var enemy;
 var win;
 var loss;
 
-var level2 = function(game) {};
+var level3 = function(game) {};
 
-level2.prototype = {
+level3.prototype = {
 	preload: function() {
 		game.load.crossOrigin = 'anonymous';
 
@@ -55,8 +55,6 @@ level2.prototype = {
 
 		game.load.image('and-gate', 'https://storage.googleapis.com/bytehunter_images/testfiles/kl-and-gate.png');
 		game.load.image('or-gate', 'https://storage.googleapis.com/bytehunter_images/testfiles/kl-or-gate.png');
-
-		game.load.script('level3', 'js/level3.js');
 	},
 
 	create: function () {
@@ -110,8 +108,6 @@ level2.prototype = {
 		enemy = game.add.sprite(650, 300, 'white-dragon');
 		enemy.width = 100;
 		enemy.height = 100;
-
-		game.state.add("level3", level3);
 	},
 
 	onOver: function(sprite, pointer) {
@@ -164,20 +160,16 @@ level2.prototype = {
 		dragPosition = new Phaser.Point(sprite.x, sprite.y);
 	},
 
-	nextLevel: function(event){
-		game.state.start("level3");	
-	},
-
 	judgment: function() {
 		if ((result3.key == "white-knight" && enemy.key == "white-dragon") || (result3.key == "black-knight" && enemy.key == "black-dragon")) {
 			win = game.add.sprite(400, 300, 'win');
 			win.anchor.setTo(0.5, 0.5);
-			// if win, go to the next level
-			game.input.onDown.add(this.nextLevel, this);
 		} else {
 			loss = game.add.sprite(400, 300, 'loss');
 			loss.anchor.setTo(0.5, 0.5);
 		}
+
+
 	},
 	
 	showResult: function(sprite, num) {
