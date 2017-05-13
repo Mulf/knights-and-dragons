@@ -34,29 +34,7 @@ var level2 = function(game) {};
 
 level2.prototype = {
 	preload: function() {
-		game.load.crossOrigin = 'anonymous';
-
-		game.load.image('background', 'https://storage.googleapis.com/bytehunter_images/testfiles/kl-background.png');
-		game.load.image('buffer-gate', 'https://storage.googleapis.com/bytehunter_images/testfiles/kl-buffer-gate.png');
-		game.load.image('not-gate', 'https://storage.googleapis.com/bytehunter_images/testfiles/kl-not-gate.png');
-		game.load.image('white-block', 'https://storage.googleapis.com/bytehunter_images/testfiles/white.png');
-
-		game.load.image('kl-zero', 'https://storage.googleapis.com/bytehunter_images/testfiles/kl-zero.png');
-		game.load.image('kl-one', 'https://storage.googleapis.com/bytehunter_images/testfiles/kl-one.png');
-
-		game.load.image('white-knight', 'https://storage.googleapis.com/bytehunter_images/testfiles/kl-white-knight.png');
-		game.load.image('black-knight', 'https://storage.googleapis.com/bytehunter_images/testfiles/kl-black-knight.png');
-
-		game.load.image('white-dragon', 'https://storage.googleapis.com/bytehunter_images/testfiles/kl-white-dragon.png');
-		game.load.image('black-dragon', 'https://storage.googleapis.com/bytehunter_images/testfiles/kl-black-dragon.png');
-
-		game.load.image('win', 'https://storage.googleapis.com/bytehunter_images/testfiles/win-msg.png');
-		game.load.image('loss', 'https://storage.googleapis.com/bytehunter_images/testfiles/loss-msg.png');
-
-		game.load.image('and-gate', 'https://storage.googleapis.com/bytehunter_images/testfiles/kl-and-gate.png');
-		game.load.image('or-gate', 'https://storage.googleapis.com/bytehunter_images/testfiles/kl-or-gate.png');
-
-		game.load.script('level3', 'js/level3.js');
+		
 	},
 
 	create: function () {

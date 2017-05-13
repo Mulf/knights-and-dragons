@@ -20,7 +20,6 @@ controller.prototype = {
 	},
 
 	loadImages: function() {
-		//game.load.spritesheet('startBt','assets/start1.png');
 		game.load.spritesheet('startBt', 'assets/button_sprite_sheet.png', 193, 71);
 		game.load.spritesheet('settingButton', 'assets/settingButton.png', 193, 71);
 		game.load.spritesheet('helpButton', 'assets/button_sprite_help.png', 193, 71);	
@@ -47,6 +46,9 @@ controller.prototype = {
 
 		game.load.image('win', baseURL + 'win-msg.png');
 		game.load.image('loss', baseURL + 'loss-msg.png');
+
+		game.load.image('and-gate', baseURL + 'kl-and-gate.png');
+		game.load.image('or-gate', baseURL + 'kl-or-gate.png');
 	},
 	
 	preload: function() {
