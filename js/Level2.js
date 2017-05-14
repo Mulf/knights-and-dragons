@@ -7,8 +7,8 @@ var knight;
 var one;
 var zero;
 
-var blkWidth = 100;
-var blkHeight = 100;
+var blkWidth = 50;
+var blkHeight = 50;
 var characterWidth = 30;
 var characterHeight = 30;
 
@@ -57,19 +57,19 @@ level2.prototype = {
 		dropZones[3].x = 500;
 		dropZones[3].y = 300;
 
-		notGate = game.add.sprite(50, 25, 'not-gate');
+		notGate = game.add.sprite(10, 15, 'not-gate');
 		notGate.width = blkWidth;
 		notGate.height = blkHeight;
 
-		bufGate = game.add.sprite(175, 25, 'buffer-gate');
+		bufGate = game.add.sprite(110, 15, 'buffer-gate');
 		bufGate.width = blkWidth;
 		bufGate.height = blkHeight;
 
-		andGate = game.add.sprite(300, 25, 'and-gate');
+		andGate = game.add.sprite(210, 15, 'and-gate');
 		andGate.width = blkWidth;
 		andGate.height = blkHeight;
 
-		orGate = game.add.sprite(425, 25, 'or-gate');
+		orGate = game.add.sprite(310, 15, 'or-gate');
 		orGate.width = blkWidth;
 		orGate.height = blkHeight;
 
@@ -211,9 +211,16 @@ level2.prototype = {
 			// if win, go to the next level
 			game.input.onDown.add(this.nextLevel, this);
 		} else {
-			loss = game.add.sprite(400, 300, 'loss');
+			loss = game.add.sprite(400, 200, 'loss');
 			loss.anchor.setTo(0.5, 0.5);
+
+			var retryBt = this.add.button(400, 400, 'retryBt', this.clickRetry, this, 2, 1, 0);
+			retryBt.anchor.setTo(0.5, 0.5);
 		}
+	},
+
+	clickRetry: function() {
+		game.state.start("level2");
 	},
 
 	setSpriteParams: function(sprite, x, y, width, height) {

@@ -181,9 +181,16 @@ level3.prototype = {
 			// if win, go to the next level
 			game.input.onDown.add(this.nextLevel, this);
 		} else {
-			loss = game.add.sprite(400, 300, 'loss');
+			loss = game.add.sprite(400, 200, 'loss');
 			loss.anchor.setTo(0.5, 0.5);
+
+			var retryBt = this.add.button(400, 400, 'retryBt', this.clickRetry, this, 2, 1, 0);
+			retryBt.anchor.setTo(0.5, 0.5);
 		}
+	},
+
+	clickRetry: function() {
+		game.state.start("level1");
 	},
 
 	setSpriteParams: function(sprite, x, y, width, height) {
