@@ -16,7 +16,13 @@ menu.prototype = {
 			preload = 0;			
 		}	
 
-		this.add.sprite(0, 0, 'background');
+		var background = this.add.sprite(0, 0, 'background');
+		background.width = 800;
+		background.height = 600;
+
+		var title = this.add.sprite(400, 100, 'title');
+		title.width = 700;
+		title.anchor.setTo(0.5, 0.5);
 
 		startBt = this.add.button(400, 200, 'startBt', this.clickStart, this, 2, 1, 0);
 		startBt.anchor.setTo(0.5, 0.5);

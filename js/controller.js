@@ -31,7 +31,8 @@ controller.prototype = {
 	},
 
 	loadGameIMG: function() {
-		// background and white block
+		// title, background and white block
+		game.load.image('title', baseURL + 'kg-title.png');
 		game.load.image('background', baseURL + 'kg-background.jpg');
 		game.load.image('white-block', baseURL + 'white.png');
 
