@@ -31,25 +31,27 @@ controller.prototype = {
 	},
 
 	loadGameIMG: function() {
+		// background and white block
 		game.load.image('background', baseURL + 'kg-background.jpg');
-		game.load.image('buffer-gate', baseURL + 'kl-buffer-gate.png');
-		game.load.image('not-gate', baseURL + 'kl-not-gate.png');
 		game.load.image('white-block', baseURL + 'white.png');
 
-		game.load.image('kl-zero', baseURL + 'kl-zero.png');
-		game.load.image('kl-one', baseURL + 'kl-one.png');
+		// logic gates
+		game.load.image('buffer-gate', baseURL + 'kg-buffer-gate.png');
+		game.load.image('not-gate', baseURL + 'kg-not-gate.png');
+		game.load.image('and-gate', baseURL + 'kg-and-gate.png');
+		game.load.image('or-gate', baseURL + 'kg-or-gate.png');
 
-		game.load.image('white-knight', baseURL + 'kl-white-knight.png');
-		game.load.image('black-knight', baseURL + 'kl-black-knight.png');
+		// white and grey knights
+		game.load.image('white-knight', baseURL + 'kg-white-knight.png');
+		game.load.image('grey-knight', baseURL + 'kg-grey-knight.png');
 
-		game.load.image('white-dragon', baseURL + 'kl-white-dragon.png');
-		game.load.image('black-dragon', baseURL + 'kl-black-dragon.png');
+		// white and grey dragons
+		game.load.image('white-dragon', baseURL + 'kg-white-dragon.png');
+		game.load.image('grey-dragon', baseURL + 'kg-grey-dragon.png');
 
+		// win and loss messages
 		game.load.image('win', baseURL + 'win-msg.png');
 		game.load.image('loss', baseURL + 'loss-msg.png');
-
-		game.load.image('and-gate', baseURL + 'kl-and-gate.png');
-		game.load.image('or-gate', baseURL + 'kl-or-gate.png');
 	},
 	
 	preload: function() {
