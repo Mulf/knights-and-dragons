@@ -59,6 +59,17 @@ controller.prototype = {
 		game.load.image('win', baseURL + 'win-msg.png');
 		game.load.image('loss', baseURL + 'loss-msg.png');
 		game.load.spritesheet('retryBt', baseURL + 'kg-retry-text-sprite-sheet.png', 193, 71);
+
+		game.load.image('score0', baseURL + 'kg-text-0.png');
+		game.load.image('score1', baseURL + 'kg-text-1.png');
+		game.load.image('score2', baseURL + 'kg-text-2.png');
+		game.load.image('score3', baseURL + 'kg-text-3.png');
+		game.load.image('score4', baseURL + 'kg-text-4.png');
+		game.load.image('score5', baseURL + 'kg-text-5.png');
+		game.load.image('score6', baseURL + 'kg-text-6.png');
+		game.load.image('score7', baseURL + 'kg-text-7.png');
+		game.load.image('score8', baseURL + 'kg-text-8.png');
+		game.load.image('score9', baseURL + 'kg-text-9.png');
 	},
 	
 	preload: function() {
