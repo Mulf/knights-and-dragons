@@ -6,12 +6,13 @@ controller = function(game) {};
 controller.prototype = {
 
 	loadScripts: function () {
-		game.load.script('menu', 'js/menu.js');
-		game.load.script('level1', 'js/level1.js');
-		game.load.script('level2', 'js/level2.js');
-		game.load.script('level3', 'js/level3.js');
-		game.load.script('help', 'js/help.js');
-		game.load.script('settings', 'js/settings.js');
+		game.load.script('menu', '../js/menu.js');
+		game.load.script('level1', '../js/level1.js');
+		game.load.script('level2', '../js/level2.js');
+		game.load.script('level3', '../js/level3.js');
+		game.load.script('help', '../js/help.js');
+		game.load.script('settings', '../js/settings.js');
+		console.log('loading scripts');
 	},
 
 	loadBGM: function() {
@@ -30,7 +31,7 @@ controller.prototype = {
 	},
 
 	loadGameIMG: function() {
-		game.load.image('background', baseURL + 'kl-background.png');
+		game.load.image('background', baseURL + 'kg-background.jpg');
 		game.load.image('buffer-gate', baseURL + 'kl-buffer-gate.png');
 		game.load.image('not-gate', baseURL + 'kl-not-gate.png');
 		game.load.image('white-block', baseURL + 'white.png');
@@ -56,6 +57,7 @@ controller.prototype = {
 		this.loadBGM();
 		this.loadGameIMG();
 		this.loadImages();
+		console.log('preloading');
 	},
 
 	create: function() {

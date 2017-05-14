@@ -17,27 +17,23 @@ var dropZone2;
 var dropZone3;
 var dragPosition;
 
-var currInput1;
-var currInput2;
-var currInput3;
-var currInput4;
-
+var currInputs = [];		// an empty array for the inputs
 var result1;
 var result2;
-var result3;
+var finalRes;
 var enemy;
 
 var win;
 var loss;
 
-var level2 = function(game) {};
+level2 = function(game) {};
 
 level2.prototype = {
 	preload: function() {
 		
 	},
-
-	create: function () {
+	
+	create: function() {
 		// load the background
 		background = game.add.sprite(0, 0, 'background');
 		background.width = 800;
@@ -69,27 +65,31 @@ level2.prototype = {
 		orGate.inputEnabled = true;
 		orGate.events.onInputDown.add(this.onGateClick, this);
 
-		currInput1 = game.add.sprite(25, 150, 'white-knight');
-		currInput1.width = 100;
-		currInput1.height = 100;
-
-		currInput2 = game.add.sprite(25, 250, 'black-knight');
-		currInput2.width = 100;
-		currInput2.height = 100;
-
-		currInput3 = game.add.sprite(25, 350, 'black-knight');
-		currInput3.width = 100;
-		currInput3.height = 100;
-
-		currInput4 = game.add.sprite(25, 450, 'white-knight');
-		currInput4.width = 100;
-		currInput4.height = 100;
+		this.randomInputGenerator(4);
+		for (i = 0; i < 4; i++) {
+			currInputs[i].x = 25;
+			currInputs[i].y = 150 + i * 100;
+			currInputs[i].width = 100;
+			currInputs[i].height = 100;
+		}
 
 		enemy = game.add.sprite(650, 300, 'white-dragon');
 		enemy.width = 100;
 		enemy.height = 100;
+	},
 
-		game.state.add("level3", level3);
+	// creates a list of random inputs
+	randomInputGenerator: function(num) {
+		var ranNum;
+		for (i = 0; i < num; i++) {
+			ranNum = Math.floor((Math.random() * 2))	// either 0 or 1
+			console.log(ranNum);
+			if (ranNum == 0) {
+				currInputs[i] = game.add.sprite(0, 0, 'white-knight');
+			} else {
+				currInputs[i] = game.add.sprite(0, 0, 'black-knight');
+			}
+		}
 	},
 
 	onOver: function(sprite, pointer) {
@@ -100,7 +100,7 @@ level2.prototype = {
 		sprite.tint = 0xffffff;
 	},
 
-	onGateClick:function(sprite) {
+	onGateClick: function(sprite) {
 		var spriteDup = game.add.sprite(sprite.x + 10, sprite.y + 10, sprite.key, sprite.frame);
 		spriteDup.width = blkWidth;
 		spriteDup.height = blkHeight;
@@ -130,6 +130,10 @@ level2.prototype = {
 		}
 	},
 
+	nextLevel: function(event) {
+		game.state.start("level3");	
+	},
+	
 	setToDragable: function(sprite) {
 		sprite.inputEnabled = true;
 		sprite.input.enableDrag();
@@ -142,12 +146,8 @@ level2.prototype = {
 		dragPosition = new Phaser.Point(sprite.x, sprite.y);
 	},
 
-	nextLevel: function(event){
-		game.state.start("level3");	
-	},
-
 	judgment: function() {
-		if ((result3.key == "white-knight" && enemy.key == "white-dragon") || (result3.key == "black-knight" && enemy.key == "black-dragon")) {
+		if ((finalRes.key == "white-knight" && enemy.key == "white-dragon") || (finalRes.key == "black-knight" && enemy.key == "black-dragon")) {
 			win = game.add.sprite(400, 300, 'win');
 			win.anchor.setTo(0.5, 0.5);
 			// if win, go to the next level
@@ -157,13 +157,13 @@ level2.prototype = {
 			loss.anchor.setTo(0.5, 0.5);
 		}
 	},
-	
+
 	showResult: function(sprite, num) {
 		if (sprite.key == "and-gate") {
 	        // only produce white when both are white
 	        if (num == 1) {
 	            // curr1 and curr2
-	            if (currInput1.key == "white-knight" && currInput2.key == "white-knight") {
+	            if (currInputs[0].key == "white-knight" && currInputs[1].key == "white-knight") {
 	            	result1 = game.add.sprite(225, 200, 'white-knight');
 	            	result1.width = 100;
 	            	result1.height = 100;
@@ -174,7 +174,7 @@ level2.prototype = {
 	            }
 	        } else if (num == 2) {
 	            // curr3 and curr4 
-	            if (currInput3.key == "white-knight" && currInput4.key == "white-knight") {
+	            if (currInputs[2].key == "white-knight" && currInputs[3].key == "white-knight") {
 	            	result2 = game.add.sprite(225, 400, 'white-knight');
 	            	result2.width = 100;
 	            	result2.height = 100;
@@ -186,20 +186,20 @@ level2.prototype = {
 	        } else if (num == 3) {
 	            // result1 and result2
 	            if (result1.key == "white-knight" && result2.key == "white-knight") {
-	            	result3 = game.add.sprite(500, 300, 'white-knight');
-	            	result3.width = 100;
-	            	result3.height = 100;
+	            	finalRes = game.add.sprite(500, 300, 'white-knight');
+	            	finalRes.width = 100;
+	            	finalRes.height = 100;
 	            } else {
-	            	result3 = game.add.sprite(500, 300, 'black-knight');
-	            	result3.width = 100;
-	            	result3.height = 100;
+	            	finalRes = game.add.sprite(500, 300, 'black-knight');
+	            	finalRes.width = 100;
+	            	finalRes.height = 100;
 	            }
 	        }
 	    } else if (sprite.key == "or-gate") {
 	        // only produce black when both are black
 	        if (num == 1) {
 	            // curr1 and curr2
-	            if (currInput1.key == "black-knight" && currInput2.key == "black-knight") {
+	            if (currInputs[0].key == "black-knight" && currInputs[1].key == "black-knight") {
 	            	result1 = game.add.sprite(225, 200, 'black-knight');
 	            	result1.width = 100;
 	            	result1.height = 100;
@@ -210,7 +210,7 @@ level2.prototype = {
 	            }
 	        } else if (num == 2) {
 	            // curr3 and curr4 
-	            if (currInput3.key == "black-knight" && currInput4.key == "black-knight") {
+	            if (currInputs[2].key == "black-knight" && currInputs[3].key == "black-knight") {
 	            	result2 = game.add.sprite(225, 400, 'black-knight');
 	            	result2.width = 100;
 	            	result2.height = 100;
@@ -222,13 +222,13 @@ level2.prototype = {
 	        } else if (num == 3) {
 	            // result1 and result2
 	            if (result1.key == "black-knight" && result2.key == "balck-knight") {
-	            	result3 = game.add.sprite(500, 300, 'black-knight');
-	            	result3.width = 100;
-	            	result3.height = 100;
+	            	finalRes = game.add.sprite(500, 300, 'black-knight');
+	            	finalRes.width = 100;
+	            	finalRes.height = 100;
 	            } else {
-	            	result3 = game.add.sprite(500, 300, 'white-knight');
-	            	result3.width = 100;
-	            	result3.height = 100;
+	            	finalRes = game.add.sprite(500, 300, 'white-knight');
+	            	finalRes.width = 100;
+	            	finalRes.height = 100;
 	            }
 	        }
 	    }
@@ -238,5 +238,3 @@ level2.prototype = {
 
 	}
 };
-
-

@@ -13,7 +13,7 @@ var blkHeight = 100;
 var dropZone;
 var dragPosition;
 
-var currInput;
+var currInputs = [];		// an empty array for the inputs
 var result;
 var enemy;
 
@@ -50,13 +50,30 @@ level1.prototype = {
 		notGate.inputEnabled = true;
 		notGate.events.onInputDown.add(this.onGateClick, this);
 
-		currInput = game.add.sprite(175, 250, 'white-knight');
-		currInput.width = 100;
-		currInput.height = 100;
+		this.randomInputGenerator(1);
+		//currInputs[0] = game.add.sprite(175, 250, 'white-knight');
+		currInputs[0].x = 175;
+		currInputs[0].y = 250
+		currInputs[0].width = 100;
+		currInputs[0].height = 100;
 
 		enemy = game.add.sprite(650, 250, 'black-dragon');
 		enemy.width = 100;
 		enemy.height = 100;
+	},
+
+	// creates a list of random inputs
+	randomInputGenerator: function(num) {
+		var ranNum;
+		for (i = 0; i < num; i++) {
+			ranNum = Math.floor((Math.random() * 2))	// either 0 or 1
+			console.log(ranNum);
+			if (ranNum == 0) {
+				currInputs[i] = game.add.sprite(0, 0, 'white-knight');
+			} else {
+				currInputs[i] = game.add.sprite(0, 0, 'black-knight');
+			}
+		}
 	},
 
 	onOver: function(sprite, pointer) {
@@ -119,21 +136,21 @@ level1.prototype = {
 
 	showResult: function(sprite) {
 		if (sprite.key == "not-gate") {
-			if (currInput.key == "white-knight") {
+			if (currInputs[0].key == "white-knight") {
 				result = game.add.sprite(525, 250, 'black-knight');
 				result.width = 100;
 				result.height = 100;
-			} else if (currInput.key == "black-knight") {
+			} else if (currInputs[0].key == "black-knight") {
 				result = game.add.sprite(525, 250, 'white-knight');
 				result.width = 100;
 				result.height = 100;
 			}
 		} else if (sprite.key == "buffer-gate") {
-			if (currInput.key == "white-knight") {
+			if (currInputs[0].key == "white-knight") {
 				result = game.add.sprite(525, 250, 'white-knight');
 				result.width = 100;
 				result.height = 100;
-			} else if (currInput.key == "black-knight") {
+			} else if (currInputs[0].key == "black-knight") {
 				result = game.add.sprite(525, 250, 'black-knight');
 				result.width = 100;
 				result.height = 100;
