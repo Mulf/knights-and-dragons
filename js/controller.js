@@ -11,6 +11,7 @@ controller.prototype = {
 		game.load.script('level2', '../js/level2.js');
 		game.load.script('level3', '../js/level3.js');
 		game.load.script('level4', '../js/level4.js');
+		game.load.script('level5', '../js/level5.js');
 		game.load.script('help', '../js/help.js');
 		game.load.script('settings', '../js/settings.js');
 	},
@@ -77,6 +78,7 @@ controller.prototype = {
 	    game.state.add("level2", level2);
 		game.state.add("level3", level3);
 		game.state.add("level4", level4);
+		game.state.add("level5", level5);
 		game.state.add("help", help);
 		game.state.add("settings", settings);
 		game.state.add('menu', menu);

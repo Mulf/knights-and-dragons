@@ -259,7 +259,18 @@ level4.prototype = {
 	},
 
 	nandGateOutput: function(sprites) {
-		return this.andGateOutput(sprites);
+		// accepts an array of sprites and return a result, the params of the result is up-to the game
+		var nandRes;
+		for (i = 0; i < sprites.length; i++) {
+			// and gates return a white knight when all the items in the array are white
+			if (sprites.key != "white-knight") {
+				// return a grey knight
+				nandRes = game.add.sprite(0, 0, 'white-knight');
+				return nandRes;
+			}
+		}
+		nandRes = game.add.sprite(0, 0, 'grey-knight');
+		return nandRes;
 	},
 
 	xorGateOutput: function(sprites) {
