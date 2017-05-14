@@ -96,6 +96,7 @@ level3.prototype = {
 	deductScore: function() {
 		totalScore--;
 		if (totalScore <= 0) {
+			timer.stop();
 			loss = game.add.sprite(400, 200, 'loss');
 			loss.anchor.setTo(0.5, 0.5);
 
