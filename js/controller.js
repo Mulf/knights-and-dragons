@@ -13,7 +13,6 @@ controller.prototype = {
 		game.load.script('level4', '../js/level4.js');
 		game.load.script('help', '../js/help.js');
 		game.load.script('settings', '../js/settings.js');
-		console.log('loading scripts');
 	},
 
 	loadBGM: function() {
@@ -65,7 +64,6 @@ controller.prototype = {
 		this.loadBGM();
 		this.loadGameIMG();
 		this.loadImages();
-		console.log('preloading');
 	},
 
 	create: function() {
@@ -77,6 +75,7 @@ controller.prototype = {
 	    game.state.add("level1", level1);
 	    game.state.add("level2", level2);
 		game.state.add("level3", level3);
+		game.state.add("level4", level4);
 		game.state.add("help", help);
 		game.state.add("settings", settings);
 		game.state.add('menu', menu);

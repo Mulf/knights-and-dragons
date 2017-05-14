@@ -2,15 +2,8 @@ var notGate;
 var bufGate;
 var whiteBlk;
 var background;
-var knight;
-
-var one;
-var zero;
-
 var blkWidth = 100;
 var blkHeight = 100;
-var characterWidth = 30;
-var characterHeight = 30;
 
 var zoneFilled = [false, false, false, false];
 var dropZones = [];
@@ -26,9 +19,9 @@ var enemies = [];
 var win;
 var loss;
 
-level2 = function(game) {};
+level4 = function(game) {};
 
-level2.prototype = {
+level4.prototype = {
 	preload: function() {
 		
 	},
@@ -46,16 +39,16 @@ level2.prototype = {
 		}
 
 		dropZones[0].x = 125;
-		dropZones[0].y = 200;
+		dropZones[0].y = 250;
 
 		dropZones[1].x = 125;
-		dropZones[1].y = 400;
+		dropZones[1].y = 450;
 
 		dropZones[2].x = 300;
-		dropZones[2].y = 300;
+		dropZones[2].y = 350;
 
 		dropZones[3].x = 500;
-		dropZones[3].y = 300;
+		dropZones[3].y = 350;
 
 		notGate = game.add.sprite(10, 15, 'not-gate');
 		notGate.width = blkWidth;
@@ -65,13 +58,13 @@ level2.prototype = {
 		bufGate.width = blkWidth;
 		bufGate.height = blkHeight;
 
-		andGate = game.add.sprite(210, 15, 'and-gate');
-		andGate.width = blkWidth;
-		andGate.height = blkHeight;
+		xorGate = game.add.sprite(210, 15, 'xor-gate');
+		xorGate.width = blkWidth;
+		xorGate.height = blkHeight;
 
-		orGate = game.add.sprite(310, 15, 'or-gate');
-		orGate.width = blkWidth;
-		orGate.height = blkHeight;
+		nandGate = game.add.sprite(310, 15, 'nand-gate');
+		nandGate.width = blkWidth;
+		nandGate.height = blkHeight;
 
 		notGate.inputEnabled = true;
 		notGate.events.onInputDown.add(this.onGateClick, this);
@@ -79,11 +72,11 @@ level2.prototype = {
 		bufGate.inputEnabled = true;
 		bufGate.events.onInputDown.add(this.onGateClick, this);
 
-		andGate.inputEnabled = true;
-		andGate.events.onInputDown.add(this.onGateClick, this);
+		xorGate.inputEnabled = true;
+		xorGate.events.onInputDown.add(this.onGateClick, this);
 
-		orGate.inputEnabled = true;
-		orGate.events.onInputDown.add(this.onGateClick, this);
+		nandGate.inputEnabled = true;
+		nandGate.events.onInputDown.add(this.onGateClick, this);
 
 		this.randomInputGenerator(4);
 		for (i = 0; i < 4; i++) {
@@ -91,7 +84,7 @@ level2.prototype = {
 		}
 
 		this.randomEnemiesGenerator(1);
-		this.setSpriteParams(enemies[0], 700, 300, 100, 100);
+		this.setSpriteParams(enemies[0], 700, 350, 100, 100);
 	},
 
 	// creates a list of random inputs
@@ -140,7 +133,7 @@ level2.prototype = {
 	},
 
 	onDragStop: function(sprite, pointer) {
-		// Note: dropZone 0, 1, 2 accepts or/and, 3 accepts not/buffer
+		// Note: dropZone 0, 2 accepts xor/nand, 1, 3 accepts not/buffer
 		if (sprite.overlap(dropZones[0])) {
 			if (sprite.key == 'not-gate' || sprite.key == 'buffer-gate') {
 				sprite.kill();
@@ -151,7 +144,7 @@ level2.prototype = {
 				this.showResult(sprite, 1);
 			}
 		} else if (sprite.overlap(dropZones[1])) {
-			if (sprite.key == 'not-gate' || sprite.key == 'buffer-gate') {
+			if (!(sprite.key == 'not-gate' || sprite.key == 'buffer-gate')) {
 				sprite.kill();
 			} else {
 				sprite.x = dropZones[1].x;
@@ -189,7 +182,7 @@ level2.prototype = {
 	},
 
 	nextLevel: function(event) {
-		game.state.start("level3");	
+		game.state.start("level5");	
 	},
 	
 	setToDragable: function(sprite) {
@@ -220,7 +213,7 @@ level2.prototype = {
 	},
 
 	clickRetry: function() {
-		game.state.start("level2");
+		game.state.start("level4");
 	},
 
 	setSpriteParams: function(sprite, x, y, width, height) {
@@ -265,71 +258,78 @@ level2.prototype = {
 		return andRes;
 	},
 
-	orGateOutput: function(sprites) {
-		// accepts an array of sprites and return a result, the params of the result is up-to the game
-		var orRes;
-		for (i = 0; i < sprites.length; i++) {
-			// or gates return a grey knight when all the items in the array are grey
-			if (sprites.key != "grey-knight") {
-				// return a white knight
-				orRes = game.add.sprite(0, 0, 'white-knight');
-				return orRes;
-			}
+	nandGateOutput: function(sprites) {
+		return this.andGateOutput(sprites);
+	},
+
+	xorGateOutput: function(sprites) {
+		if (sprites.length == 2) {
+			// the last call
+			if (sprites[0].key == sprites[1].key)
+				return game.add.sprite(0, 0, 'grey-knight');
+			else
+				return game.add.sprite(0, 0, 'white-knight');
 		}
-		orRes = game.add.sprite(0, 0, 'grey-knight');
-		return orRes;
+
+		var rtSprite = this.xorGateOutput(sprites.slice(1));
+		if (sprites[0].key == rtSprite.key) {
+			rtSprite.kill();
+			return game.add.sprite(0, 0, 'grey-knight');
+		} else {
+			rtSprite.kill();
+			return game.add.sprite(0, 0, 'white-knight');
+		}
 	},
 
 	showResult: function(sprite, num) {
 		var inputArray = [];
-		if (sprite.key == "and-gate") {
+		if (sprite.key == "nand-gate") {
 	        // only produce white when both are white
 	        if (num == 1) {
-	            // curr1 and curr2
+	            // curr1, curr2 and curr3
 	            inputArray[0] = currInputs[0];
 	            inputArray[1] = currInputs[1];
-	            result1 = this.andGateOutput(inputArray);
-	            this.setSpriteParams(result1, 225, 200, 100, 100);
-	        } else if (num == 2) {
-	            // curr3 and curr4
-	            inputArray[0] = currInputs[2];
-	            inputArray[1] = currInputs[3];
-	            result2 = this.andGateOutput(inputArray);
-	            this.setSpriteParams(result2, 225, 400, 100, 100);
+	            inputArray[2] = currInputs[2];
+	            result1 = this.nandGateOutput(inputArray);
+	            this.setSpriteParams(result1, 225, 250, 100, 100);
 	        } else if (num == 3) {
 	            // result1 and result2
 	            inputArray[0] = result1;
 	            inputArray[1] = result2;
-	            result3 = this.andGateOutput(inputArray);
-	            this.setSpriteParams(result3, 400, 300, 100, 100);
+	            result3 = this.nandGateOutput(inputArray);
+	            this.setSpriteParams(result3, 400, 350, 100, 100);
 	        }
-	    } else if (sprite.key == "or-gate") {
-	        // only produce white when both are white
+	    } else if (sprite.key == "xor-gate") {
 	        if (num == 1) {
-	            // curr1 and curr2
+	            // curr1, curr2 and curr3
 	            inputArray[0] = currInputs[0];
 	            inputArray[1] = currInputs[1];
-	            result1 = this.orGateOutput(inputArray);
-	            this.setSpriteParams(result1, 225, 200, 100, 100);
-	        } else if (num == 2) {
-	            // curr3 and curr4
-	            inputArray[0] = currInputs[2];
-	            inputArray[1] = currInputs[3];
-	            result2 = this.orGateOutput(inputArray);
-	            this.setSpriteParams(result2, 225, 400, 100, 100);
+	            inputArray[2] = currInputs[2];
+	            result1 = this.xorGateOutput(inputArray);
+	            this.setSpriteParams(result1, 225, 250, 100, 100);
 	        } else if (num == 3) {
 	            // result1 and result2
 	            inputArray[0] = result1;
 	            inputArray[1] = result2;
-	            result3 = this.orGateOutput(inputArray);
-	            this.setSpriteParams(result3, 400, 300, 100, 100);
+	            result3 = this.xorGateOutput(inputArray);
+	            this.setSpriteParams(result3, 400, 350, 100, 100);
 	        }
 	    } else if (sprite.key == "buffer-gate") {
-	    	finalRes = this.bufferGateOutput(result3);
-	        this.setSpriteParams(finalRes, 600, 300, 100, 100);
+	    	if (num == 2) {
+	            result2 = this.bufferGateOutput(currInputs[3]);
+	            this.setSpriteParams(result2, 225, 450, 100, 100);
+	        } else if (num == 4) {
+	            finalRes = this.bufferGateOutput(result3);
+	            this.setSpriteParams(finalRes, 600, 350, 100, 100);
+	        }
 	    } else if (sprite.key == "not-gate") {
-	    	finalRes = this.notGateOutput(result3);
-	        this.setSpriteParams(finalRes, 600, 300, 100, 100);
+	    	if (num == 2) {
+	            result2 = this.notGateOutput(currInputs[3]);
+	            this.setSpriteParams(result2, 225, 450, 100, 100);
+	        } else if (num == 4) {
+	            finalRes = this.notGateOutput(result3);
+	            this.setSpriteParams(finalRes, 600, 350, 100, 100);
+	        }
 	    }
 	},
 

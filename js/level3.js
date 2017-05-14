@@ -190,7 +190,7 @@ level3.prototype = {
 	},
 
 	clickRetry: function() {
-		game.state.start("level1");
+		game.state.start("level3");
 	},
 
 	setSpriteParams: function(sprite, x, y, width, height) {
@@ -261,8 +261,8 @@ level3.prototype = {
 	        this.setSpriteParams(result1, 350, 300, 100, 100);
 	    } else if (sprite.key == "or-gate" && num == 1) {
 	        // only produce white when both are white
-	        result1 = this.andGateOutput(inputArray);
-	        this.setSpriteParams(result1, 550, 300, 100, 100);
+	        result1 = this.orGateOutput(inputArray);
+	        this.setSpriteParams(result1, 350, 300, 100, 100);
 	    } else if (sprite.key == "buffer-gate") {
 	    	finalRes = this.bufferGateOutput(result1);
 	        this.setSpriteParams(finalRes, 600, 300, 100, 100);
