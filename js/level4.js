@@ -85,6 +85,23 @@ level4.prototype = {
 
 		this.randomEnemiesGenerator(1);
 		this.setSpriteParams(enemies[0], 700, 350, 100, 100);
+
+		// timer
+		totalScore = 100;
+		timer = game.time.create(false);
+		timer.loop(1000, this.deductScore, this);
+		timer.start();
+	},
+
+	deductScore: function() {
+		totalScore--;
+		if (totalScore <= 0) {
+			loss = game.add.sprite(400, 200, 'loss');
+			loss.anchor.setTo(0.5, 0.5);
+
+			var retryBt = this.add.button(400, 400, 'retryBt', this.clickRetry, this, 2, 1, 0);
+			retryBt.anchor.setTo(0.5, 0.5);
+		}
 	},
 
 	// creates a list of random inputs
@@ -346,5 +363,9 @@ level4.prototype = {
 
 	update: function() {
 
+	},
+
+	render: function() {
+		game.debug.text('Your score: ' + totalScore, 600, 550);
 	}
 };

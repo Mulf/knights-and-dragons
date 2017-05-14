@@ -20,6 +20,8 @@ var enemies = [];
 var win;
 var loss;
 var retry;
+var totalScore = 100;
+var timer;
 
 level1 = function(game) {};
 
@@ -62,6 +64,23 @@ level1.prototype = {
 		enemies[0].y = 250;
 		enemies[0].width = 100;
 		enemies[0].height = 100;
+
+		// timer
+		totalScore = 100;
+		timer = game.time.create(false);
+		timer.loop(1000, this.deductScore, this);
+		timer.start();
+	},
+
+	deductScore: function() {
+		totalScore--;
+		if (totalScore <= 0) {
+			loss = game.add.sprite(400, 200, 'loss');
+			loss.anchor.setTo(0.5, 0.5);
+
+			var retryBt = this.add.button(400, 400, 'retryBt', this.clickRetry, this, 2, 1, 0);
+			retryBt.anchor.setTo(0.5, 0.5);
+		}
 	},
 
 	// creates a list of random inputs
@@ -180,5 +199,9 @@ level1.prototype = {
 
 	update: function() {
 
+	},
+
+	render: function() {
+		game.debug.text('Your score: ' + totalScore, 600, 550);
 	}
 };
