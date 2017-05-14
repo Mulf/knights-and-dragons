@@ -45,31 +45,17 @@ level2.prototype = {
 			dropZones[i].height = blkHeight;
 		}
 
-		dropZones[0].x = 150;
+		dropZones[0].x = 125;
 		dropZones[0].y = 200;
 
-		dropZones[1].x = 150;
+		dropZones[1].x = 125;
 		dropZones[1].y = 400;
 
 		dropZones[2].x = 300;
 		dropZones[2].y = 300;
 
-		dropZones[3].x = 450;
+		dropZones[3].x = 500;
 		dropZones[3].y = 300;
-
-		/*
-		dropZone1 = game.add.sprite(150, 200, 'white-block');
-		dropZone1.width = blkWidth;
-		dropZone1.height = blkHeight;
-
-		dropZone2 = game.add.sprite(150, 400, 'white-block');
-		dropZone2.width = blkWidth;
-		dropZone2.height = blkHeight;
-
-		dropZone3 = game.add.sprite(400, 300, 'white-block');
-		dropZone3.width = blkWidth;
-		dropZone3.height = blkHeight;
-		*/
 
 		notGate = game.add.sprite(50, 25, 'not-gate');
 		notGate.width = blkWidth;
@@ -101,17 +87,11 @@ level2.prototype = {
 
 		this.randomInputGenerator(4);
 		for (i = 0; i < 4; i++) {
-			currInputs[i].x = 25;
-			currInputs[i].y = 150 + i * 100;
-			currInputs[i].width = 100;
-			currInputs[i].height = 100;
+			this.setSpriteParams(currInputs[i], 0, 150 + i * 100, 100, 100);
 		}
 
 		this.randomEnemiesGenerator(1);
-		enemies[0].x = 650;
-		enemies[0].y = 300;
-		enemies[0].width = 100;
-		enemies[0].height = 100;
+		this.setSpriteParams(enemies[0], 700, 300, 100, 100);
 	},
 
 	// creates a list of random inputs
