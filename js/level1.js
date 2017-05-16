@@ -97,9 +97,9 @@ level1.prototype = {
 		for (i = 0; i < num; i++) {
 			ranNum = Math.floor((Math.random() * 2))	// either 0 or 1
 			if (ranNum == 0) {
-				currInputs[i] = game.add.sprite(0, 0, 'red-knight');
+				currInputs[i] = game.add.sprite(0, 0, 'red-knight-sheet');
 			} else {
-				currInputs[i] = game.add.sprite(0, 0, 'yellow-knight');
+				currInputs[i] = game.add.sprite(0, 0, 'yellow-knight-sheet');
 			}
 		}
 	},
@@ -141,8 +141,16 @@ level1.prototype = {
 		if (sprite.overlap(dropZone)) {
 			sprite.x = dropZone.x;
 			sprite.y = dropZone.y;
-			this.showResult(sprite);
-			this.judgment();
+
+			//currInputs[0].animations.add('walk');
+			//currInputs[0].animations.play('walk', 500, true);
+			var movein = game.add.tween(currInputs[0]).to({x: 350}, 1000, Phaser.Easing.Linear.None, true);
+			movein.onStart.add(function() {this.startAnimation(currInputs[0])}, this);
+			//movein.onComplete.add(this.tweenAction, sprite);
+			var gate = sprite;
+			movein.onComplete.add(function() {this.showResult(sprite)}, this);
+			//this.showResult(sprite);
+			//this.judgment();
 		} else {
 			sprite.kill();
 		}
@@ -164,8 +172,55 @@ level1.prototype = {
 		dragPosition = new Phaser.Point(sprite.x, sprite.y);
 	},
 
+	clickRetry: function() {
+		game.state.start("level1");
+	},
+
+	showResult: function(sprite) {
+		console.log('here111');
+		currInputs[0].kill();
+		if (sprite.key == "not-gate") {
+			console.log('not-gate');
+			if (currInputs[0].key == "red-knight-sheet") {
+				result = game.add.sprite(350, 250, 'yellow-knight-sheet');
+				result.width = 100;
+				result.height = 100;
+			} else {
+				result = game.add.sprite(350, 250, 'red-knight-sheet');
+				result.width = 100;
+				result.height = 100;
+			}
+		} else {
+			if (currInputs[0].key == "red-knight-sheet") {
+				result = game.add.sprite(350, 250, 'red-knight-sheet');
+				result.width = 100;
+				result.height = 100;
+			} else {
+				result = game.add.sprite(350, 250, 'yellow-knight-sheet');
+				result.width = 100;
+				result.height = 100;
+			}
+		}
+		//result.animations.add('walk');
+		//result.animations.play('walk', 500, true);
+		var moveout = game.add.tween(result).to({x: 525}, 1000, Phaser.Easing.Linear.None, true);
+		moveout.onStart.add(function() {this.startAnimation(result)}, this);
+		moveout.onComplete.add(function() {this.judgment()}, this);
+		//movein.chain(moveout);
+	},
+
+	startAnimation: function(sprite) {
+		sprite.animations.add('walk');
+		sprite.animations.play('walk', 500, true);
+	},
+
+	stopAnimation: function(sprite) {
+		sprite.animations.stop(null, true);
+	},
+
 	judgment: function() {
-		if ((result.key == "red-knight" && enemies[0].key == "red-dragon-sheet") || (result.key == "yellow-knight" && enemies[0].key == "yellow-dragon-sheet")) {
+		this.stopAnimation(result);
+		if ((result.key == "red-knight-sheet" && enemies[0].key == "red-dragon-sheet") || (result.key == "yellow-knight-sheet" && enemies[0].key == "yellow-dragon-sheet")) {
 			win = game.add.sprite(400, 300, 'win');
 			win.anchor.setTo(0.5, 0.5);
 			// if win, go to the next level
@@ -176,34 +231,6 @@ level1.prototype = {
 
 			var retryBt = this.add.button(400, 400, 'retryBt', this.clickRetry, this, 2, 1, 0);
 			retryBt.anchor.setTo(0.5, 0.5);
-		}
-	},
-
-	clickRetry: function() {
-		game.state.start("level1");
-	},
-
-	showResult: function(sprite) {
-		if (sprite.key == "not-gate") {
-			if (currInputs[0].key == "red-knight") {
-				result = game.add.sprite(525, 250, 'yellow-knight');
-				result.width = 100;
-				result.height = 100;
-			} else if (currInputs[0].key == "yellow-knight") {
-				result = game.add.sprite(525, 250, 'red-knight');
-				result.width = 100;
-				result.height = 100;
-			}
-		} else if (sprite.key == "buffer-gate") {
-			if (currInputs[0].key == "red-knight") {
-				result = game.add.sprite(525, 250, 'red-knight');
-				result.width = 100;
-				result.height = 100;
-			} else if (currInputs[0].key == "yellow-knight") {
-				result = game.add.sprite(525, 250, 'yellow-knight');
-				result.width = 100;
-				result.height = 100;
-			}
 		}
 	},
 
