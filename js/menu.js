@@ -37,15 +37,15 @@ menu.prototype = {
 		yellowKnight.animations.play('walk', 1000, true);
 
 
-		var redDragon = this.add.sprite(575, 225, 'red-dragon-sheet');
-		redDragon.width = aniLogoSize;
-		redDragon.height = aniLogoSize;
+		var redDragon = this.add.sprite(610, 258, 'red-dragon-sheet');
+		redDragon.width = aniLogoSize - 50;
+		redDragon.height = aniLogoSize - 50;
 		redDragon.animations.add('fly');
 		redDragon.animations.play('fly', 1000, true);
 
-		var yellowDragon = this.add.sprite(575, 350, 'yellow-dragon-sheet');
-		yellowDragon.width = aniLogoSize;
-		yellowDragon.height = aniLogoSize;
+		var yellowDragon = this.add.sprite(610, 383, 'yellow-dragon-sheet');
+		yellowDragon.width = aniLogoSize - 50;
+		yellowDragon.height = aniLogoSize - 50;
 		yellowDragon.animations.add('fly');
 		yellowDragon.animations.play('fly', 1000, true);
 
