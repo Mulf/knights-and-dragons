@@ -165,7 +165,16 @@ level4.prototype = {
 				sprite.x = dropZones[0].x;
 				sprite.y = dropZones[0].y;
 				zoneFilled[0] = true;
-				this.showResult(sprite, 1);
+
+				var movein0 = game.add.tween(currInputs[0]).to({x: 125, y: 250}, 1000, Phaser.Easing.Linear.None, true);
+				movein0.onStart.add(function() {this.startAnimation(currInputs[0])}, this);
+				var movein1 = game.add.tween(currInputs[1]).to({x: 125, y: 250}, 1000, Phaser.Easing.Linear.None, true);
+				movein1.onStart.add(function() {this.startAnimation(currInputs[1])}, this);
+				var movein2 = game.add.tween(currInputs[2]).to({x: 125, y: 250}, 1000, Phaser.Easing.Linear.None, true);
+				movein2.onStart.add(function() {this.startAnimation(currInputs[2])}, this);
+
+				movein2.onComplete.add(function() {this.showResult(sprite, 1)}, this);
+				//this.showResult(sprite, 1);
 			}
 		} else if (sprite.overlap(dropZones[1])) {
 			if (!(sprite.key == 'not-gate' || sprite.key == 'buffer-gate')) {
@@ -174,7 +183,12 @@ level4.prototype = {
 				sprite.x = dropZones[1].x;
 				sprite.y = dropZones[1].y;
 				zoneFilled[1] = true;
-				this.showResult(sprite, 2);
+
+				var movein3 = game.add.tween(currInputs[3]).to({x: 125, y: 450}, 1000, Phaser.Easing.Linear.None, true);
+				movein3.onStart.add(function() {this.startAnimation(currInputs[3])}, this);
+
+				movein3.onComplete.add(function() {this.showResult(sprite, 2)}, this);
+				//this.showResult(sprite, 2);
 			}
 		} else if (sprite.overlap(dropZones[2])) {
 			// disabled until dropzone 0, 1 are filled
@@ -185,7 +199,14 @@ level4.prototype = {
 					sprite.x = dropZones[2].x;
 					sprite.y = dropZones[2].y;
 					zoneFilled[2] = true;
-					this.showResult(sprite, 3);
+
+					var movein4 = game.add.tween(result1).to({x: 300, y: 350}, 1000, Phaser.Easing.Linear.None, true);
+					movein4.onStart.add(function() {this.startAnimation(result1)}, this);
+					var movein5 = game.add.tween(result2).to({x: 300, y: 350}, 1000, Phaser.Easing.Linear.None, true);
+					movein5.onStart.add(function() {this.startAnimation(result2)}, this);
+
+					movein5.onComplete.add(function() {this.showResult(sprite, 3)}, this);
+					//this.showResult(sprite, 3);
 				}
 			} else {
 				sprite.kill();
@@ -195,14 +216,28 @@ level4.prototype = {
 			if (zoneFilled[2] && (sprite.key == 'not-gate' || sprite.key == 'buffer-gate')) {
 				sprite.x = dropZones[3].x;
 				sprite.y = dropZones[3].y;
-				this.showResult(sprite, 4);
-				this.judgment();
+
+				var movein6 = game.add.tween(result3).to({x: 500, y: 350}, 1000, Phaser.Easing.Linear.None, true);
+				movein6.onStart.add(function() {this.startAnimation(result3)}, this);
+
+				movein6.onComplete.add(function() {this.showResult(sprite, 4)}, this);
+				//this.showResult(sprite, 4);
+				//this.judgment();
 			} else {
 				sprite.kill();
 			}
 		} else {
 			sprite.kill();
 		}
+	},
+
+	startAnimation: function(sprite) {
+		sprite.animations.add('walk');
+		sprite.animations.play('walk', 500, true);
+	},
+
+	stopAnimation: function(sprite) {
+		sprite.animations.stop(null, true);
 	},
 
 	nextLevel: function(event) {
@@ -326,13 +361,25 @@ level4.prototype = {
 	            inputArray[1] = currInputs[1];
 	            inputArray[2] = currInputs[2];
 	            result1 = this.nandGateOutput(inputArray);
-	            this.setSpriteParams(result1, 225, 250, 100, 100);
+	            for (i = 0; i < 3; i++)
+	            	currInputs[i].kill();
+	            this.setSpriteParams(result1, 125, 250, 100, 100);
+
+	            var moveout1 = game.add.tween(result1).to({x: 225}, 1000, Phaser.Easing.Linear.None, true);
+				moveout1.onStart.add(function() {this.startAnimation(result1)}, this);
+				moveout1.onComplete.add(function() {this.stopAnimation(result1)}, this);
 	        } else if (num == 3) {
 	            // result1 and result2
 	            inputArray[0] = result1;
 	            inputArray[1] = result2;
 	            result3 = this.nandGateOutput(inputArray);
-	            this.setSpriteParams(result3, 400, 350, 100, 100);
+	            result1.kill();
+	            result2.kill();
+	            this.setSpriteParams(result3, 300, 350, 100, 100);
+
+	            var moveout2 = game.add.tween(result3).to({x: 400}, 1000, Phaser.Easing.Linear.None, true);
+				moveout2.onStart.add(function() {this.startAnimation(result3)}, this);
+				moveout2.onComplete.add(function() {this.stopAnimation(result3)}, this);
 	        }
 	    } else if (sprite.key == "xor-gate") {
 	        if (num == 1) {
@@ -341,29 +388,63 @@ level4.prototype = {
 	            inputArray[1] = currInputs[1];
 	            inputArray[2] = currInputs[2];
 	            result1 = this.xorGateOutput(inputArray);
-	            this.setSpriteParams(result1, 225, 250, 100, 100);
+	            for (i = 0; i < 3; i++)
+	            	currInputs[i].kill();
+	            this.setSpriteParams(result1, 125, 250, 100, 100);
+
+	            var moveout1 = game.add.tween(result1).to({x: 225}, 1000, Phaser.Easing.Linear.None, true);
+				moveout1.onStart.add(function() {this.startAnimation(result1)}, this);
+				moveout1.onComplete.add(function() {this.stopAnimation(result1)}, this);
 	        } else if (num == 3) {
 	            // result1 and result2
 	            inputArray[0] = result1;
 	            inputArray[1] = result2;
 	            result3 = this.xorGateOutput(inputArray);
-	            this.setSpriteParams(result3, 400, 350, 100, 100);
+	            result1.kill();
+	            result2.kill();
+	            this.setSpriteParams(result3, 300, 350, 100, 100);
+
+	            var moveout2 = game.add.tween(result3).to({x: 400}, 1000, Phaser.Easing.Linear.None, true);
+				moveout2.onStart.add(function() {this.startAnimation(result3)}, this);
+				moveout2.onComplete.add(function() {this.stopAnimation(result3)}, this);
 	        }
 	    } else if (sprite.key == "buffer-gate") {
 	    	if (num == 2) {
 	            result2 = this.bufferGateOutput(currInputs[3]);
-	            this.setSpriteParams(result2, 225, 450, 100, 100);
+	            currInputs[3].kill();
+	            this.setSpriteParams(result2, 125, 450, 100, 100);
+
+	            var moveout2 = game.add.tween(result2).to({x: 225}, 1000, Phaser.Easing.Linear.None, true);
+				moveout2.onStart.add(function() {this.startAnimation(result2)}, this);
+				moveout2.onComplete.add(function() {this.stopAnimation(result2)}, this);
 	        } else if (num == 4) {
 	            finalRes = this.bufferGateOutput(result3);
-	            this.setSpriteParams(finalRes, 600, 350, 100, 100);
+	            result3.kill();
+	            this.setSpriteParams(finalRes, 500, 350, 100, 100);
+
+	            var moveout2 = game.add.tween(finalRes).to({x: 600}, 1000, Phaser.Easing.Linear.None, true);
+				moveout2.onStart.add(function() {this.startAnimation(finalRes)}, this);
+				moveout2.onComplete.add(function() {this.stopAnimation(finalRes)}, this);
+				moveout2.onComplete.add(function() {this.judgment()}, this);
 	        }
 	    } else if (sprite.key == "not-gate") {
 	    	if (num == 2) {
 	            result2 = this.notGateOutput(currInputs[3]);
-	            this.setSpriteParams(result2, 225, 450, 100, 100);
+	            currInputs[3].kill();
+	            this.setSpriteParams(result2, 125, 450, 100, 100);
+
+	            var moveout2 = game.add.tween(result2).to({x: 225}, 1000, Phaser.Easing.Linear.None, true);
+				moveout2.onStart.add(function() {this.startAnimation(result2)}, this);
+				moveout2.onComplete.add(function() {this.stopAnimation(result2)}, this);
 	        } else if (num == 4) {
 	            finalRes = this.notGateOutput(result3);
-	            this.setSpriteParams(finalRes, 600, 350, 100, 100);
+	            result3.kill();
+	            this.setSpriteParams(finalRes, 500, 350, 100, 100);
+
+	            var moveout2 = game.add.tween(finalRes).to({x: 600}, 1000, Phaser.Easing.Linear.None, true);
+				moveout2.onStart.add(function() {this.startAnimation(finalRes)}, this);
+				moveout2.onComplete.add(function() {this.stopAnimation(finalRes)}, this);
+				moveout2.onComplete.add(function() {this.judgment()}, this);
 	        }
 	    }
 	},

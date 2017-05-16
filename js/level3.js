@@ -174,7 +174,6 @@ level3.prototype = {
 				movein3.onStart.add(function() {this.startAnimation(currInputs[3])}, this);
 
 				movein1.onComplete.add(function() {this.showResult(sprite, 1)}, this);
-				//this.showResult(sprite, 1);
 			}
 		} else if (sprite.overlap(dropZones[1])) {
 			// disabled until drapzone[0] is filled
@@ -186,8 +185,6 @@ level3.prototype = {
 				movein4.onStart.add(function() {this.startAnimation(result1)}, this);
 
 				movein4.onComplete.add(function() {this.showResult(sprite, 2)}, this);
-				//this.showResult(sprite, 2);
-				//this.judgment();
 			} else {
 				sprite.kill();
 			}
