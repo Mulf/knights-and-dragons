@@ -179,7 +179,16 @@ level5.prototype = {
 				sprite.x = dropZones[0].x;
 				sprite.y = dropZones[0].y;
 				zoneFilled[0] = true;
-				this.showResult(sprite, 1);
+
+				var movein0 = game.add.tween(currInputs[0]).to({x: 125, y: 200}, 1000, Phaser.Easing.Linear.None, true);
+				movein0.onStart.add(function() {this.startAnimation(currInputs[0])}, this);
+				var movein1 = game.add.tween(currInputs[1]).to({x: 125, y: 200}, 1000, Phaser.Easing.Linear.None, true);
+				movein1.onStart.add(function() {this.startAnimation(currInputs[1])}, this);
+				var movein2 = game.add.tween(currInputs[2]).to({x: 125, y: 200}, 1000, Phaser.Easing.Linear.None, true);
+				movein2.onStart.add(function() {this.startAnimation(currInputs[2])}, this);
+
+				movein2.onComplete.add(function() {this.showResult(sprite, 1)}, this);
+				//this.showResult(sprite, 1);
 			}
 		} else if (sprite.overlap(dropZones[1])) {
 			// drop zone for input 3, 4, 5  -> result 2 (accepts nor, xnor)
@@ -189,7 +198,16 @@ level5.prototype = {
 				sprite.x = dropZones[1].x;
 				sprite.y = dropZones[1].y;
 				zoneFilled[1] = true;
-				this.showResult(sprite, 2);
+
+				var movein0 = game.add.tween(currInputs[3]).to({x: 125, y: 350}, 1000, Phaser.Easing.Linear.None, true);
+				movein0.onStart.add(function() {this.startAnimation(currInputs[3])}, this);
+				var movein1 = game.add.tween(currInputs[4]).to({x: 125, y: 350}, 1000, Phaser.Easing.Linear.None, true);
+				movein1.onStart.add(function() {this.startAnimation(currInputs[4])}, this);
+				var movein2 = game.add.tween(currInputs[5]).to({x: 125, y: 350}, 1000, Phaser.Easing.Linear.None, true);
+				movein2.onStart.add(function() {this.startAnimation(currInputs[5])}, this);
+
+				movein2.onComplete.add(function() {this.showResult(sprite, 2)}, this);
+				//this.showResult(sprite, 2);
 			}
 		} else if (sprite.overlap(dropZones[2])) {
 			// drop zone for input 6, 7 	-> result 3 (accepts nor, xnor)
@@ -199,7 +217,14 @@ level5.prototype = {
 				sprite.x = dropZones[2].x;
 				sprite.y = dropZones[2].y;
 				zoneFilled[2] = true;
-				this.showResult(sprite, 3);
+
+				var movein0 = game.add.tween(currInputs[6]).to({x: 125, y: 475}, 1000, Phaser.Easing.Linear.None, true);
+				movein0.onStart.add(function() {this.startAnimation(currInputs[6])}, this);
+				var movein1 = game.add.tween(currInputs[7]).to({x: 125, y: 475}, 1000, Phaser.Easing.Linear.None, true);
+				movein1.onStart.add(function() {this.startAnimation(currInputs[7])}, this);
+
+				movein1.onComplete.add(function() {this.showResult(sprite, 3)}, this);
+				//this.showResult(sprite, 3);
 			}
 		} else if (sprite.overlap(dropZones[3])) {
 			// drop zone for result 1, 2, 3	-> result 4 (accepts nor, xnor) 
@@ -208,7 +233,16 @@ level5.prototype = {
 				sprite.x = dropZones[3].x;
 				sprite.y = dropZones[3].y;
 				zoneFilled[3] = true;
-				this.showResult(sprite, 4);
+
+				var movein0 = game.add.tween(result1).to({x: 250, y: 342}, 1000, Phaser.Easing.Linear.None, true);
+				movein0.onStart.add(function() {this.startAnimation(result1)}, this);
+				var movein1 = game.add.tween(result2).to({x: 250, y: 342}, 1000, Phaser.Easing.Linear.None, true);
+				movein1.onStart.add(function() {this.startAnimation(result2)}, this);
+				var movein2 = game.add.tween(result3).to({x: 250, y: 342}, 1000, Phaser.Easing.Linear.None, true);
+				movein2.onStart.add(function() {this.startAnimation(result3)}, this);
+
+				movein2.onComplete.add(function() {this.showResult(sprite, 4)}, this);
+				//this.showResult(sprite, 4);
 			} else {
 				sprite.kill();
 			}
@@ -216,14 +250,28 @@ level5.prototype = {
 			if (zoneFilled[3] && (sprite.key == 'not-gate' || sprite.key == 'buffer-gate')) {
 				sprite.x = dropZones[4].x;
 				sprite.y = dropZones[4].y;
-				this.showResult(sprite, 5);
-				this.judgment();
+
+				var movein2 = game.add.tween(result4).to({x: 450, y: 342}, 1000, Phaser.Easing.Linear.None, true);
+				movein2.onStart.add(function() {this.startAnimation(result4)}, this);
+
+				movein2.onComplete.add(function() {this.showResult(sprite, 5)}, this);
+				//this.showResult(sprite, 5);
+				//this.judgment();
 			} else {
 				sprite.kill();
 			}
 		} else {
 			sprite.kill();
 		}
+	},
+
+	startAnimation: function(sprite) {
+		sprite.animations.add('walk');
+		sprite.animations.play('walk', 500, true);
+	},
+
+	stopAnimation: function(sprite) {
+		sprite.animations.stop(null, true);
 	},
 
 	nextLevel: function(event) {
@@ -347,27 +395,52 @@ level5.prototype = {
 	            inputArray[1] = currInputs[1];
 	            inputArray[2] = currInputs[2];
 	            result1 = this.norGateOutput(inputArray);
-	            this.setSpriteParams(result1, 200, 200, smallBlkSize, smallBlkSize);
+	            for (i = 0; i < 3; i++)
+	            	currInputs[i].kill();
+	            this.setSpriteParams(result1, 125, 200, smallBlkSize, smallBlkSize);
+
+	            var moveout1 = game.add.tween(result1).to({x: 200}, 1000, Phaser.Easing.Linear.None, true);
+				moveout1.onStart.add(function() {this.startAnimation(result1)}, this);
+				moveout1.onComplete.add(function() {this.stopAnimation(result1)}, this);
 	        } else if (num == 2) {
 	            // input 3, 4, 5
 	            inputArray[0] = currInputs[3];
 	            inputArray[1] = currInputs[4];
 	            inputArray[2] = currInputs[5];
 	            result2 = this.norGateOutput(inputArray);
-	            this.setSpriteParams(result2, 200, 350, smallBlkSize, smallBlkSize);
+	            for (i = 3; i < 6; i++)
+	            	currInputs[i].kill();
+	            this.setSpriteParams(result2, 125, 350, smallBlkSize, smallBlkSize);
+
+	            var moveout1 = game.add.tween(result2).to({x: 200}, 1000, Phaser.Easing.Linear.None, true);
+				moveout1.onStart.add(function() {this.startAnimation(result2)}, this);
+				moveout1.onComplete.add(function() {this.stopAnimation(result2)}, this);
 	        } else if (num == 3) {
 	        	// input 6, 7
 	        	inputArray[0] = currInputs[6];
 	            inputArray[1] = currInputs[7];
 	            result3 = this.norGateOutput(inputArray);
-	            this.setSpriteParams(result3, 200, 475, smallBlkSize, smallBlkSize);
+	            for (i = 6; i < 8; i++)
+	            	currInputs[i].kill();
+	            this.setSpriteParams(result3, 125, 475, smallBlkSize, smallBlkSize);
+
+	            var moveout1 = game.add.tween(result3).to({x: 200}, 1000, Phaser.Easing.Linear.None, true);
+				moveout1.onStart.add(function() {this.startAnimation(result3)}, this);
+				moveout1.onComplete.add(function() {this.stopAnimation(result3)}, this);
 	        } else if (num == 4) {
 	        	// result 1, 2, 3
 	        	inputArray[0] = result1;
 	            inputArray[1] = result2;
 	            inputArray[2] = result3;
 	            result4 = this.norGateOutput(inputArray);
-	            this.setSpriteParams(result4, 350, 342, smallBlkSize, smallBlkSize);
+	            result1.kill();
+	            result2.kill();
+	            result3.kill();
+	            this.setSpriteParams(result4, 250, 342, smallBlkSize, smallBlkSize);
+
+	            var moveout1 = game.add.tween(result4).to({x: 350}, 1000, Phaser.Easing.Linear.None, true);
+				moveout1.onStart.add(function() {this.startAnimation(result4)}, this);
+				moveout1.onComplete.add(function() {this.stopAnimation(result4)}, this);
 	        }
 	    } else if (sprite.key == "xnor-gate") {
 	        if (num == 1) {
@@ -376,34 +449,69 @@ level5.prototype = {
 	            inputArray[1] = currInputs[1];
 	            inputArray[2] = currInputs[2];
 	            result1 = this.xnorGateOutput(inputArray);
-	            this.setSpriteParams(result1, 200, 200, smallBlkSize, smallBlkSize);
+	            for (i = 0; i < 3; i++)
+	            	currInputs[i].kill();
+	            this.setSpriteParams(result1, 125, 200, smallBlkSize, smallBlkSize);
+
+	            var moveout1 = game.add.tween(result1).to({x: 200}, 1000, Phaser.Easing.Linear.None, true);
+				moveout1.onStart.add(function() {this.startAnimation(result1)}, this);
+				moveout1.onComplete.add(function() {this.stopAnimation(result1)}, this);
 	        } else if (num == 2) {
 	            // input 3, 4, 5
 	            inputArray[0] = currInputs[3];
 	            inputArray[1] = currInputs[4];
 	            inputArray[2] = currInputs[5];
 	            result2 = this.xnorGateOutput(inputArray);
-	            this.setSpriteParams(result2, 200, 350, smallBlkSize, smallBlkSize);
+	            for (i = 3; i < 6; i++)
+	            	currInputs[i].kill();
+	            this.setSpriteParams(result2, 125, 350, smallBlkSize, smallBlkSize);
+
+	            var moveout1 = game.add.tween(result2).to({x: 200}, 1000, Phaser.Easing.Linear.None, true);
+				moveout1.onStart.add(function() {this.startAnimation(result2)}, this);
+				moveout1.onComplete.add(function() {this.stopAnimation(result2)}, this);
 	        } else if (num == 3) {
 	        	// input 6, 7
 	        	inputArray[0] = currInputs[6];
 	            inputArray[1] = currInputs[7];
 	            result3 = this.xnorGateOutput(inputArray);
-	            this.setSpriteParams(result3, 200, 475, smallBlkSize, smallBlkSize);
+	            for (i = 6; i < 8; i++)
+	            	currInputs[i].kill();
+	            this.setSpriteParams(result3, 125, 475, smallBlkSize, smallBlkSize);
+
+	            var moveout1 = game.add.tween(result3).to({x: 200}, 1000, Phaser.Easing.Linear.None, true);
+				moveout1.onStart.add(function() {this.startAnimation(result3)}, this);
+				moveout1.onComplete.add(function() {this.stopAnimation(result3)}, this);
 	        } else if (num == 4) {
 	        	// result 1, 2, 3
 	        	inputArray[0] = result1;
 	            inputArray[1] = result2;
 	            inputArray[2] = result3;
 	            result4 = this.xnorGateOutput(inputArray);
-	            this.setSpriteParams(result4, 350, 342, smallBlkSize, smallBlkSize);
+	            result1.kill();
+	            result2.kill();
+	            result3.kill();
+	            this.setSpriteParams(result4, 250, 342, smallBlkSize, smallBlkSize);
+
+	            var moveout1 = game.add.tween(result4).to({x: 350}, 1000, Phaser.Easing.Linear.None, true);
+				moveout1.onStart.add(function() {this.startAnimation(result4)}, this);
+				moveout1.onComplete.add(function() {this.stopAnimation(result4)}, this);
 	        }
 	    } else if (sprite.key == "buffer-gate" && num == 5) {
             finalRes = this.bufferGateOutput(result4);
-            this.setSpriteParams(finalRes, 550, 342, smallBlkSize, smallBlkSize);
+            result4.kill();
+            this.setSpriteParams(finalRes, 450, 342, smallBlkSize, smallBlkSize);
+            var moveout1 = game.add.tween(finalRes).to({x: 550}, 1000, Phaser.Easing.Linear.None, true);
+			moveout1.onStart.add(function() {this.startAnimation(finalRes)}, this);
+			moveout1.onComplete.add(function() {this.stopAnimation(finalRes)}, this);
+			moveout1.onComplete.add(function() {this.judgment()}, this);
 	    } else if (sprite.key == "not-gate" && num == 5) {
             finalRes = this.notGateOutput(result4);
-            this.setSpriteParams(finalRes, 550, 342, smallBlkSize, smallBlkSize);
+            result4.kill();
+            this.setSpriteParams(finalRes, 450, 342, smallBlkSize, smallBlkSize);
+            var moveout1 = game.add.tween(finalRes).to({x: 550}, 1000, Phaser.Easing.Linear.None, true);
+			moveout1.onStart.add(function() {this.startAnimation(finalRes)}, this);
+			moveout1.onComplete.add(function() {this.stopAnimation(finalRes)}, this);
+			moveout1.onComplete.add(function() {this.judgment()}, this);
 	    }
 	},
 

@@ -221,8 +221,6 @@ level4.prototype = {
 				movein6.onStart.add(function() {this.startAnimation(result3)}, this);
 
 				movein6.onComplete.add(function() {this.showResult(sprite, 4)}, this);
-				//this.showResult(sprite, 4);
-				//this.judgment();
 			} else {
 				sprite.kill();
 			}
