@@ -185,8 +185,6 @@ level2.prototype = {
 				movein1.onStart.add(function() {this.startAnimation(currInputs[1])}, this);
 
 				movein1.onComplete.add(function() {this.showResult(sprite, 1)}, this);
-
-				//this.showResult(sprite, 1);
 			}
 		} else if (sprite.overlap(dropZones[1])) {
 			if (sprite.key == 'not-gate' || sprite.key == 'buffer-gate') {
@@ -202,7 +200,6 @@ level2.prototype = {
 				movein3.onStart.add(function() {this.startAnimation(currInputs[3])}, this);
 
 				movein3.onComplete.add(function() {this.showResult(sprite, 2)}, this);
-				//this.showResult(sprite, 2);
 			}
 		} else if (sprite.overlap(dropZones[2])) {
 			// disabled until dropzone 0, 1 are filled
@@ -220,7 +217,6 @@ level2.prototype = {
 					movein5.onStart.add(function() {this.startAnimation(result2)}, this);
 
 					movein5.onComplete.add(function() {this.showResult(sprite, 3)}, this);
-					//this.showResult(sprite, 3);
 				}
 			} else {
 				sprite.kill();
@@ -235,8 +231,6 @@ level2.prototype = {
 				movein6.onStart.add(function() {this.startAnimation(result3)}, this);
 
 				movein6.onComplete.add(function() {this.showResult(sprite, 4)}, this);
-				//this.showResult(sprite, 4);
-				//this.judgment();
 			} else {
 				sprite.kill();
 			}
@@ -320,9 +314,11 @@ level2.prototype = {
 	andGateOutput: function(sprites) {
 		// accepts an array of sprites and return a result, the params of the result is up-to the game
 		var andRes;
+		console.log('and');
+		console.log(sprites.length);
 		for (i = 0; i < sprites.length; i++) {
 			// and gates return a white knight when all the items in the array are white
-			if (sprites.key != "red-knight-sheet") {
+			if (sprites[i].key != "red-knight-sheet") {
 				// return a grey knight
 				andRes = game.add.sprite(0, 0, 'yellow-knight-sheet');
 				return andRes;
@@ -335,9 +331,11 @@ level2.prototype = {
 	orGateOutput: function(sprites) {
 		// accepts an array of sprites and return a result, the params of the result is up-to the game
 		var orRes;
+		console.log('or');
+		console.log(sprites.length);
 		for (i = 0; i < sprites.length; i++) {
 			// or gates return a grey knight when all the items in the array are grey
-			if (sprites.key != "yellow-knight-sheet") {
+			if (sprites[i].key != "yellow-knight-sheet") {
 				// return a white knight
 				orRes = game.add.sprite(0, 0, 'red-knight-sheet');
 				return orRes;
@@ -443,6 +441,6 @@ level2.prototype = {
 	},
 
 	render: function() {
-		game.debug.text('Your score: ' + totalScore, 600, 550);
+		game.debug.text('Your score: ' + currLevelScore, 600, 550);
 	}
 };

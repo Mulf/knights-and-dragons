@@ -20,8 +20,10 @@ var enemies = [];
 var win;
 var loss;
 var retry;
+
+var currLevelScore = 100;
+var timerCount = 110;			// leave 10 more seconds to operate
 var totalScore = 100;
-var cumulateScore = 0;
 var timer;
 
 level1 = function(game) {};
@@ -72,7 +74,7 @@ level1.prototype = {
 		enemies[0].height = 100;
 
 		// timer
-		totalScore = 10;
+		currLevelScore = 100;
 		timer = game.time.create(false);
 		timer.loop(1000, this.deductScore, this);
 		timer.start();
@@ -83,16 +85,20 @@ level1.prototype = {
 	},
 
 	deductScore: function() {
-		totalScore--;
-		if (totalScore <= 0) {
+		timerCount--;				// deduct timercount every second
+		if (timerCount <= 100) {
+			// when timercount less than 100, deduct curr score
+			currLevelScore--;
+		}
+
+		if (currLevelScore <= 0) {
+			currLevelScore = 0;
 			timer.stop();
 			this.gameOver;
 		}
 	},
 
 	gameOver: function() {
-		cumulateScore += totalScore;
-		
 		loss = game.add.sprite(400, 200, 'loss');
 		loss.anchor.setTo(0.5, 0.5);
 
@@ -217,12 +223,26 @@ level1.prototype = {
 	},
 
 	judgment: function() {
+		timer.stop();
 		this.stopAnimation(result);
 		if ((result.key == "red-knight-sheet" && enemies[0].key == "red-dragon-sheet") || (result.key == "yellow-knight-sheet" && enemies[0].key == "yellow-dragon-sheet")) {
-			win = game.add.sprite(400, 300, 'win');
+			win = game.add.sprite(400, 100, 'win');
 			win.anchor.setTo(0.5, 0.5);
-			// if win, go to the next level
-			game.input.onDown.add(this.nextLevel, this);
+			// if win, show the score and go to the next level
+			if (currLevelScore == 100) {
+				this.placeNumSprite(1, 340, 300);
+				this.placeNumSprite(0, 380, 300);
+				this.placeNumSprite(0, 430, 300);
+			} else if (currLevelScore >=10) {
+				var num1 = currLevelScore % 10;
+				var num2 = Math.floor(currLevelScore / 10);
+				this.placeNumSprite(num2, 355, 300);
+				this.placeNumSprite(num1, 415, 300);
+			} else {
+				this.placeNumSprite(currLevelScore, 350, 300);
+			}
+			var continueBt = game.add.button(400, 500, 'continueBt', this.nextLevel, this, 0, 1, 2);
+			continueBt.anchor.setTo(0.5, 0.5);
 		} else {
 			loss = game.add.sprite(400, 200, 'loss');
 			loss.anchor.setTo(0.5, 0.5);
@@ -232,11 +252,35 @@ level1.prototype = {
 		}
 	},
 
+	placeNumSprite: function(num, x, y) {
+		if (num == 0)
+			var numText = game.add.sprite(x, y, '0-text');
+		else if (num == 1)
+			var numText = game.add.sprite(x, y, '1-text');
+		else if (num == 2)
+			var numText = game.add.sprite(x, y, '2-text');
+		else if (num == 3)
+			var numText = game.add.sprite(x, y, '3-text');
+		else if (num == 4)
+			var numText = game.add.sprite(x, y, '4-text');
+		else if (num == 5)
+			var numText = game.add.sprite(x, y, '5-text');
+		else if (num == 6)
+			var numText = game.add.sprite(x, y, '6-text');
+		else if (num == 7)
+			var numText = game.add.sprite(x, y, '7-text');
+		else if (num == 8)
+			var numText = game.add.sprite(x, y, '8-text');
+		else if (num == 9)
+			var numText = game.add.sprite(x, y, '9-text');
+		numText.anchor.setTo(0.5, 0.5);
+	},
+
 	update: function() {
 
 	},
 
 	render: function() {
-		game.debug.text('Your score: ' + totalScore, 600, 550);
+		game.debug.text('Your score: ' + currLevelScore, 600, 550);
 	}
 };

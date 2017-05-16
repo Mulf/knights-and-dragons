@@ -313,7 +313,7 @@ level4.prototype = {
 		var andRes;
 		for (i = 0; i < sprites.length; i++) {
 			// and gates return a white knight when all the items in the array are white
-			if (sprites.key != "red-knight-sheet") {
+			if (sprites[i].key != "red-knight-sheet") {
 				// return a grey knight
 				andRes = game.add.sprite(0, 0, 'yellow-knight-sheet');
 				return andRes;
@@ -328,7 +328,7 @@ level4.prototype = {
 		var nandRes;
 		for (i = 0; i < sprites.length; i++) {
 			// and gates return a white knight when all the items in the array are white
-			if (sprites.key != "red-knight-sheet") {
+			if (sprites[i].key != "red-knight-sheet") {
 				// return a grey knight
 				nandRes = game.add.sprite(0, 0, 'red-knight-sheet');
 				return nandRes;
@@ -460,6 +460,6 @@ level4.prototype = {
 	},
 
 	render: function() {
-		game.debug.text('Your score: ' + totalScore, 600, 550);
+		game.debug.text('Your score: ' + currLevelScore, 600, 550);
 	}
 };

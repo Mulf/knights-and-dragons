@@ -41,6 +41,7 @@ controller.prototype = {
 		game.load.spritesheet('levelBt', baseURL + 'kg-level-bt-spritesheet.png', 245, 94, 3);
 		game.load.spritesheet('helpBt', baseURL + 'kg-help-bt-spritesheet.png', 210, 95, 3);
 		game.load.spritesheet('gobackBt', baseURL + 'kg-goback-bt-spritesheet.png', 339, 94, 3);
+		game.load.spritesheet('continueBt', baseURL + 'kg-continue-bt-spritesheet.png', 339, 94, 3);
 
 		game.load.spritesheet('level1Bt', baseURL + 'kg-level1-spritesheet.png', 289, 94, 3);
 		game.load.spritesheet('level2Bt', baseURL + 'kg-level2-spritesheet.png', 295, 94, 3);

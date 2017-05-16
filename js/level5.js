@@ -347,7 +347,7 @@ level5.prototype = {
 	orGateOutput: function(sprites) {
 		// accepts an array of sprites and return a result, the params of the result is up-to the game
 		var orRes;
-		for (i = 0; i < sprites.length; i++) {
+		for (i = 0; i < sprites[0].length; i++) {
 			// or gates return a grey knight when all the items in the array are grey
 			if (sprites.key != "yellow-knight-sheet") {
 				// return a white knight
@@ -362,7 +362,7 @@ level5.prototype = {
 	norGateOutput: function(sprites) {
 		// accepts an array of sprites and return a result, the params of the result is up-to the game
 		var norRes;
-		for (i = 0; i < sprites.length; i++) {
+		for (i = 0; i < sprites[0].length; i++) {
 			// or gates return a grey knight when all the items in the array are grey
 			if (sprites.key != "yellow-knight-sheet") {
 				// return a white knight
@@ -528,6 +528,6 @@ level5.prototype = {
 	},
 
 	render: function() {
-		game.debug.text('Your score: ' + totalScore, 600, 550);
+		game.debug.text('Your score: ' + currLevelScore, 600, 550);
 	}
 };
