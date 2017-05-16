@@ -114,9 +114,9 @@ level3.prototype = {
 			ranNum = Math.floor((Math.random() * 2))	// either 0 or 1
 			console.log(ranNum);
 			if (ranNum == 0) {
-				currInputs[i] = game.add.sprite(0, 0, 'red-knight');
+				currInputs[i] = game.add.sprite(0, 0, 'red-knight-sheet');
 			} else {
-				currInputs[i] = game.add.sprite(0, 0, 'yellow-knight');
+				currInputs[i] = game.add.sprite(0, 0, 'yellow-knight-sheet');
 			}
 		}
 	},
@@ -163,21 +163,46 @@ level3.prototype = {
 				sprite.x = dropZones[0].x;
 				sprite.y = dropZones[0].y;
 				zoneFilled[0] = true;
-				this.showResult(sprite, 1);
+
+				var movein0 = game.add.tween(currInputs[0]).to({x: 250, y: 300}, 1000, Phaser.Easing.Linear.None, true);
+				movein0.onStart.add(function() {this.startAnimation(currInputs[0])}, this);
+				var movein1 = game.add.tween(currInputs[1]).to({x: 250, y: 300}, 1000, Phaser.Easing.Linear.None, true);
+				movein1.onStart.add(function() {this.startAnimation(currInputs[1])}, this);
+				var movein2 = game.add.tween(currInputs[2]).to({x: 250, y: 300}, 1000, Phaser.Easing.Linear.None, true);
+				movein2.onStart.add(function() {this.startAnimation(currInputs[2])}, this);
+				var movein3 = game.add.tween(currInputs[3]).to({x: 250, y: 300}, 1000, Phaser.Easing.Linear.None, true);
+				movein3.onStart.add(function() {this.startAnimation(currInputs[3])}, this);
+
+				movein1.onComplete.add(function() {this.showResult(sprite, 1)}, this);
+				//this.showResult(sprite, 1);
 			}
 		} else if (sprite.overlap(dropZones[1])) {
 			// disabled until drapzone[0] is filled
 			if (zoneFilled[0] && (sprite.key == 'not-gate' || sprite.key == 'buffer-gate')) {
 				sprite.x = dropZones[1].x;
 				sprite.y = dropZones[1].y;
-				this.showResult(sprite, 2);
-				this.judgment();
+
+				var movein4 = game.add.tween(result1).to({x: 450, y: 300}, 1000, Phaser.Easing.Linear.None, true);
+				movein4.onStart.add(function() {this.startAnimation(result1)}, this);
+
+				movein4.onComplete.add(function() {this.showResult(sprite, 2)}, this);
+				//this.showResult(sprite, 2);
+				//this.judgment();
 			} else {
 				sprite.kill();
 			}
 		} else {
 			sprite.kill();
 		}
+	},
+
+	startAnimation: function(sprite) {
+		sprite.animations.add('walk');
+		sprite.animations.play('walk', 500, true);
+	},
+
+	stopAnimation: function(sprite) {
+		sprite.animations.stop(null, true);
 	},
 
 	nextLevel: function(event) {
@@ -197,7 +222,8 @@ level3.prototype = {
 	},
 
 	judgment: function() {
-		if ((finalRes.key == "red-knight" && enemies[0].key == "red-dragon-sheet") || (finalRes.key == "yellow-knight" && enemies[0].key == "yellow-dragon-sheet")) {
+		this.stopAnimation(finalRes);
+		if ((finalRes.key == "red-knight-sheet" && enemies[0].key == "red-dragon-sheet") || (finalRes.key == "yellow-knight-sheet" && enemies[0].key == "yellow-dragon-sheet")) {
 			win = game.add.sprite(400, 300, 'win');
 			win.anchor.setTo(0.5, 0.5);
 			// if win, go to the next level
@@ -225,20 +251,20 @@ level3.prototype = {
 	bufferGateOutput: function(sprite) {
 		// accepts a sprite and pass it
 		var bufRes;
-		if (sprite.key == "red-knight")
-			bufRes = game.add.sprite(0, 0, 'red-knight');
-		else if (sprite.key == "yellow-knight")
-			bufRes = game.add.sprite(0, 0, 'yellow-knight');
+		if (sprite.key == "red-knight-sheet")
+			bufRes = game.add.sprite(0, 0, 'red-knight-sheet');
+		else if (sprite.key == "yellow-knight-sheet")
+			bufRes = game.add.sprite(0, 0, 'yellow-knight-sheet');
 		return bufRes;
 	},
 
 	notGateOutput: function(sprite) {
 		// accepts a sprite and revert it
 		var notRes;
-		if (sprite.key == "red-knight")
-			notRes = game.add.sprite(0, 0, 'yellow-knight');
-		else if (sprite.key == "yellow-knight")
-			notRes = game.add.sprite(0, 0, 'red-knight');
+		if (sprite.key == "red-knight-sheet")
+			notRes = game.add.sprite(0, 0, 'yellow-knight-sheet');
+		else if (sprite.key == "yellow-knight-sheet")
+			notRes = game.add.sprite(0, 0, 'red-knight-sheet');
 		return notRes;
 	},
 
@@ -247,13 +273,13 @@ level3.prototype = {
 		var andRes;
 		for (i = 0; i < sprites.length; i++) {
 			// and gates return a white knight when all the items in the array are white
-			if (sprites.key != "red-knight") {
+			if (sprites.key != "red-knight-sheet") {
 				// return a grey knight
-				andRes = game.add.sprite(0, 0, 'yellow-knight');
+				andRes = game.add.sprite(0, 0, 'yellow-knight-sheet');
 				return andRes;
 			}
 		}
-		andRes = game.add.sprite(0, 0, 'red-knight');
+		andRes = game.add.sprite(0, 0, 'red-knight-sheet');
 		return andRes;
 	},
 
@@ -262,13 +288,13 @@ level3.prototype = {
 		var orRes;
 		for (i = 0; i < sprites.length; i++) {
 			// or gates return a grey knight when all the items in the array are grey
-			if (sprites.key != "yellow-knight") {
+			if (sprites.key != "yellow-knight-sheet") {
 				// return a white knight
-				orRes = game.add.sprite(0, 0, 'red-knight');
+				orRes = game.add.sprite(0, 0, 'red-knight-sheet');
 				return orRes;
 			}
 		}
-		orRes = game.add.sprite(0, 0, 'yellow-knight');
+		orRes = game.add.sprite(0, 0, 'yellow-knight-sheet');
 		return orRes;
 	},
 
@@ -280,17 +306,39 @@ level3.prototype = {
 		if (sprite.key == "and-gate" && num == 1) {
 	        // only produce white when all are white
 	        result1 = this.andGateOutput(inputArray);
-	        this.setSpriteParams(result1, 350, 300, 100, 100);
+	        for (i = 0; i < 4; i++)
+	        	currInputs[i].kill();
+	        this.setSpriteParams(result1, 250, 300, 100, 100);
+
+	        var moveout1 = game.add.tween(result1).to({x: 350}, 1000, Phaser.Easing.Linear.None, true);
+			moveout1.onStart.add(function() {this.startAnimation(result1)}, this);
+			moveout1.onComplete.add(function() {this.stopAnimation(result1)}, this);
 	    } else if (sprite.key == "or-gate" && num == 1) {
 	        // only produce white when both are white
 	        result1 = this.orGateOutput(inputArray);
-	        this.setSpriteParams(result1, 350, 300, 100, 100);
+	        for (i = 0; i < 4; i++)
+	        	currInputs[i].kill();
+	        this.setSpriteParams(result1, 250, 300, 100, 100);
+
+	        var moveout2 = game.add.tween(result1).to({x: 350}, 1000, Phaser.Easing.Linear.None, true);
+			moveout2.onStart.add(function() {this.startAnimation(result1)}, this);
+			moveout2.onComplete.add(function() {this.stopAnimation(result1)}, this);
 	    } else if (sprite.key == "buffer-gate") {
 	    	finalRes = this.bufferGateOutput(result1);
-	        this.setSpriteParams(finalRes, 600, 300, 100, 100);
+	    	result1.kill();
+	        this.setSpriteParams(finalRes, 450, 300, 100, 100);
+
+	        var moveout3 = game.add.tween(finalRes).to({x: 600}, 1000, Phaser.Easing.Linear.None, true);
+			moveout3.onStart.add(function() {this.startAnimation(finalRes)}, this);
+			moveout3.onComplete.add(function() {this.judgment()}, this);
 	    } else if (sprite.key == "not-gate") {
 	    	finalRes = this.notGateOutput(result1);
-	        this.setSpriteParams(finalRes, 600, 300, 100, 100);
+	    	result1.kill();
+	        this.setSpriteParams(finalRes, 450, 300, 100, 100);
+
+	        var moveout3 = game.add.tween(finalRes).to({x: 600}, 1000, Phaser.Easing.Linear.None, true);
+			moveout3.onStart.add(function() {this.startAnimation(finalRes)}, this);
+			moveout3.onComplete.add(function() {this.judgment()}, this);
 	    }
 	},
 

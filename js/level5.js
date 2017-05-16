@@ -129,9 +129,9 @@ level5.prototype = {
 			ranNum = Math.floor((Math.random() * 2))	// either 0 or 1
 			console.log(ranNum);
 			if (ranNum == 0) {
-				currInputs[i] = game.add.sprite(0, 0, 'red-knight');
+				currInputs[i] = game.add.sprite(0, 0, 'red-knight-sheet');
 			} else {
-				currInputs[i] = game.add.sprite(0, 0, 'yellow-knight');
+				currInputs[i] = game.add.sprite(0, 0, 'yellow-knight-sheet');
 			}
 		}
 	},
@@ -243,7 +243,7 @@ level5.prototype = {
 	},
 
 	judgment: function() {
-		if ((finalRes.key == "red-knight" && enemies[0].key == "red-dragon-sheet") || (finalRes.key == "yellow-knight" && enemies[0].key == "yellow-dragon-sheet")) {
+		if ((finalRes.key == "red-knight-sheet" && enemies[0].key == "red-dragon-sheet") || (finalRes.key == "yellow-knight-sheet" && enemies[0].key == "yellow-dragon-sheet")) {
 			win = game.add.sprite(400, 300, 'win');
 			win.anchor.setTo(0.5, 0.5);
 			// if win, go to the next level
@@ -271,20 +271,20 @@ level5.prototype = {
 	bufferGateOutput: function(sprite) {
 		// accepts a sprite and pass it
 		var bufRes;
-		if (sprite.key == "red-knight")
-			bufRes = game.add.sprite(0, 0, 'red-knight');
-		else if (sprite.key == "yellow-knight")
-			bufRes = game.add.sprite(0, 0, 'yellow-knight');
+		if (sprite.key == "red-knight-sheet")
+			bufRes = game.add.sprite(0, 0, 'red-knight-sheet');
+		else if (sprite.key == "yellow-knight-sheet")
+			bufRes = game.add.sprite(0, 0, 'yellow-knight-sheet');
 		return bufRes;
 	},
 
 	notGateOutput: function(sprite) {
 		// accepts a sprite and revert it
 		var notRes;
-		if (sprite.key == "red-knight")
-			notRes = game.add.sprite(0, 0, 'yellow-knight');
-		else if (sprite.key == "yellow-knight")
-			notRes = game.add.sprite(0, 0, 'red-knight');
+		if (sprite.key == "red-knight-sheet")
+			notRes = game.add.sprite(0, 0, 'yellow-knight-sheet');
+		else if (sprite.key == "yellow-knight-sheet")
+			notRes = game.add.sprite(0, 0, 'red-knight-sheet');
 		return notRes;
 	},
 
@@ -293,13 +293,13 @@ level5.prototype = {
 		var orRes;
 		for (i = 0; i < sprites.length; i++) {
 			// or gates return a grey knight when all the items in the array are grey
-			if (sprites.key != "yellow-knight") {
+			if (sprites.key != "yellow-knight-sheet") {
 				// return a white knight
-				orRes = game.add.sprite(0, 0, 'red-knight');
+				orRes = game.add.sprite(0, 0, 'red-knight-sheet');
 				return orRes;
 			}
 		}
-		orRes = game.add.sprite(0, 0, 'yellow-knight');
+		orRes = game.add.sprite(0, 0, 'yellow-knight-sheet');
 		return orRes;
 	},
 
@@ -308,13 +308,13 @@ level5.prototype = {
 		var norRes;
 		for (i = 0; i < sprites.length; i++) {
 			// or gates return a grey knight when all the items in the array are grey
-			if (sprites.key != "yellow-knight") {
+			if (sprites.key != "yellow-knight-sheet") {
 				// return a white knight
-				norRes = game.add.sprite(0, 0, 'yellow-knight');
+				norRes = game.add.sprite(0, 0, 'yellow-knight-sheet');
 				return norRes;
 			}
 		}
-		norRes = game.add.sprite(0, 0, 'red-knight');
+		norRes = game.add.sprite(0, 0, 'red-knight-sheet');
 		return norRes;
 	},
 
@@ -322,18 +322,18 @@ level5.prototype = {
 		if (sprites.length == 2) {
 			// the last call
 			if (sprites[0].key == sprites[1].key)
-				return game.add.sprite(0, 0, 'red-knight');
+				return game.add.sprite(0, 0, 'red-knight-sheet');
 			else
-				return game.add.sprite(0, 0, 'yellow-knight');
+				return game.add.sprite(0, 0, 'yellow-knight-sheet');
 		}
 
 		var rtSprite = this.xnorGateOutput(sprites.slice(1));
 		if (sprites[0].key == rtSprite.key) {
 			rtSprite.kill();
-			return game.add.sprite(0, 0, 'red-knight');
+			return game.add.sprite(0, 0, 'red-knight-sheet');
 		} else {
 			rtSprite.kill();
-			return game.add.sprite(0, 0, 'yellow-knight');
+			return game.add.sprite(0, 0, 'yellow-knight-sheet');
 		}
 	},
 
