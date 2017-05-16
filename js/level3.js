@@ -37,6 +37,9 @@ level3.prototype = {
 		background.width = 800;
 		background.height = 600;
 
+		var gamehomeBt = game.add.button(720, 30, 'homeBt', this.clickHome, this, 0, 1, 2);
+		gamehomeBt.scale.setTo(0.3, 0.3);
+		gamehomeBt.anchor.setTo(0.5, 0.5);
 		
 		dropZones[0] = game.add.sprite(150, 200, 'dropzone-4');
 		dropZones[1] = game.add.sprite(150, 200, 'dropzone-1');
@@ -93,6 +96,10 @@ level3.prototype = {
 		timer = game.time.create(false);
 		timer.loop(1000, this.deductScore, this);
 		timer.start();
+	},
+
+	clickHome: function() {
+		game.state.start("menu");
 	},
 
 	deductScore: function() {

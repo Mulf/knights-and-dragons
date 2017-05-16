@@ -5,12 +5,14 @@ settings = function(game) {};
 settings.prototype = {
 	
 	preload: function() {
-		game.load.spritesheet('homeButton', 'assets/Home.png');
-		game.load.spritesheet('musicButton', 'assets/music.png');
-		game.load.spritesheet('musicOffButton', 'assets/musicOff.png');
+
 	},
 	
 	create: function() {
+
+		var background = this.add.sprite(0, 0, 'background');
+		background.width = 800;
+		background.height = 600;
 
 		if (music.name !== "bgMusic" && musicPlay) {
 			music.stop();
@@ -18,34 +20,32 @@ settings.prototype = {
 			music.loop = true;
 			music.play();
 		}
-
-		this.add.sprite(0, 0, 'background');
 		
-		homeButton = game.add.button(400, 250, 'homeBt', this.Home, this, 0, 1, 2);
-		homeButton.anchor.setTo(0.5, 0.5);
+		var homeBt = this.add.button(40, 30, 'homeBt', this.clickHome, this, 0, 1, 2);
+		homeBt.scale.setTo(0.3, 0.3);
+		homeBt.anchor.setTo(0.5, 0.5);
 		
 		// music button
-		musicOffButton = game.add.button(400, 350, 'musicOffButton', this.mute, this, 2, 1, 0);
+		musicOffButton = game.add.button(400, 300, 'musicOffBt', this.setMusicBt, this, 2, 1, 0);
 		musicOffButton.anchor.setTo(0.5, 0.5);			
-		musicButton = game.add.button(400, 350, 'musicButton', this.mute, this, 2, 1, 0);
+		musicButton = game.add.button(400, 300, 'musicOnBt', this.setMusicBt, this, 2, 1, 0);
 		musicButton.anchor.setTo(0.5, 0.5);
 	},
 
-	Home: function(button) {
+	clickHome: function(button) {
 		game.state.start("menu");
 	},
 
-	mute: function() {
-		musicPlay =! musicPlay;
-
+	setMusicBt: function() {
+		musicPlay = !musicPlay;
 		if(musicPlay) {
 			musicOffButton.invisible = false;
-			musicButton = game.add.button(400, 350, 'musicButton', this.mute, this, 2, 1, 0);
+			musicButton = game.add.button(400, 300, 'musicOnBt', this.setMusicBt, this, 2, 1, 0);
 			musicButton.anchor.setTo(0.5,0.5);
 			music.play();
 		} else {
 			musicButton.invisible = false;
-			musicOffButton = game.add.button(400, 350, 'musicOffButton', this.mute, this, 2, 1, 0);
+			musicOffButton = game.add.button(400, 300, 'musicOffBt', this.setMusicBt, this, 2, 1, 0);
 			musicOffButton.anchor.setTo(0.5, 0.5);
 			music.stop();
 		}

@@ -32,9 +32,14 @@ level1.prototype = {
 	},
 	
 	create: function() {
+
 		background = game.add.sprite(0, 0, 'background');
 		background.width = 800;
 		background.height = 600;
+
+		var gamehomeBt = game.add.button(720, 30, 'homeBt', this.clickHome, this, 0, 1, 2);
+		gamehomeBt.scale.setTo(0.3, 0.3);
+		gamehomeBt.anchor.setTo(0.5, 0.5);
 
 		dropZone = game.add.sprite(350, 250, 'dropzone-1');
 		dropZone.width = blkWidth;
@@ -71,6 +76,10 @@ level1.prototype = {
 		timer = game.time.create(false);
 		timer.loop(1000, this.deductScore, this);
 		timer.start();
+	},
+
+	clickHome: function() {
+		game.state.start("menu");
 	},
 
 	deductScore: function() {
@@ -173,7 +182,6 @@ level1.prototype = {
 	showResult: function(sprite) {
 		currInputs[0].kill();
 		if (sprite.key == "not-gate") {
-			console.log('not-gate');
 			if (currInputs[0].key == "red-knight-sheet") {
 				result = game.add.sprite(350, 250, 'yellow-knight-sheet');
 				result.width = 100;

@@ -23,12 +23,8 @@ controller.prototype = {
 	},
 
 	loadImages: function() {
-		//game.load.spritesheet('startBt', 'assets/button_sprite_sheet.png', 193, 71);
-		//game.load.spritesheet('settingButton', 'assets/settingButton.png', 193, 71);
-		//game.load.spritesheet('helpButton', 'assets/button_sprite_help.png', 193, 71);	
 		game.load.spritesheet('continueButton', 'assets/Continue.png');
 		game.load.spritesheet('restartButton', 'assets/Restart.png');
-		game.load.spritesheet('homeButton', 'assets/Home.png');
 		game.load.spritesheet('nextButton', 'assets/Next.png'); 
 	},
 
@@ -51,6 +47,9 @@ controller.prototype = {
 		game.load.spritesheet('level3Bt', baseURL + 'kg-level3-spritesheet.png', 296, 94, 3);
 		game.load.spritesheet('level4Bt', baseURL + 'kg-level4-spritesheet.png', 302, 94, 3);
 		game.load.spritesheet('level5Bt', baseURL + 'kg-level5-spritesheet.png', 296, 94, 3);
+
+		game.load.image('musicOnBt', baseURL + 'kg-music-on-bt.png');
+		game.load.image('musicOffBt', baseURL + 'kg-music-off-bt.png');
 
 		// load knight spritesheet
 		game.load.image('red-knight', baseURL + 'kg-red-knight-idle.png');
@@ -78,14 +77,6 @@ controller.prototype = {
 		game.load.image('nand-gate', baseURL + 'kg-nand-gate.png');
 		game.load.image('nor-gate', baseURL + 'kg-nor-gate.png');
 		game.load.image('xnor-gate', baseURL + 'kg-xnor-gate.png');
-
-		// white and grey knights
-		game.load.image('white-knight', baseURL + 'kg-white-knight.png');
-		game.load.image('grey-knight', baseURL + 'kg-grey-knight.png');
-
-		// white and grey dragons
-		game.load.image('white-dragon', baseURL + 'kg-white-dragon.png');
-		game.load.image('grey-dragon', baseURL + 'kg-grey-dragon.png');
 
 		// win and loss messages
 		game.load.image('win', baseURL + 'kg-win-text.png');

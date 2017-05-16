@@ -39,6 +39,10 @@ level2.prototype = {
 		background.width = 800;
 		background.height = 600;
 
+		var gamehomeBt = game.add.button(720, 30, 'homeBt', this.clickHome, this, 0, 1, 2);
+		gamehomeBt.scale.setTo(0.3, 0.3);
+		gamehomeBt.anchor.setTo(0.5, 0.5);
+
 		dropZones[0] = game.add.sprite(150, 200, 'dropzone-2');
 		dropZones[1] = game.add.sprite(150, 200, 'dropzone-2');
 		dropZones[2] = game.add.sprite(150, 200, 'dropzone-2');
@@ -104,6 +108,10 @@ level2.prototype = {
 		timer.start();
 	},
 
+	clickHome: function() {
+		game.state.start("menu");
+	},
+
 	deductScore: function() {
 		totalScore--;
 		if (totalScore <= 0) {
@@ -121,7 +129,6 @@ level2.prototype = {
 		var ranNum;
 		for (i = 0; i < num; i++) {
 			ranNum = Math.floor((Math.random() * 2))	// either 0 or 1
-			console.log(ranNum);
 			if (ranNum == 0) {
 				currInputs[i] = game.add.sprite(0, 0, 'red-knight-sheet');
 			} else {
