@@ -21,6 +21,7 @@ var win;
 var loss;
 var retry;
 var totalScore = 100;
+var cumulateScore = 0;
 var timer;
 
 level1 = function(game) {};
@@ -35,7 +36,7 @@ level1.prototype = {
 		background.width = 800;
 		background.height = 600;
 
-		dropZone = game.add.sprite(350, 250, 'white-block');
+		dropZone = game.add.sprite(350, 250, 'dropzone-1');
 		dropZone.width = blkWidth;
 		dropZone.height = blkHeight;
 
@@ -66,7 +67,7 @@ level1.prototype = {
 		enemies[0].height = 100;
 
 		// timer
-		totalScore = 100;
+		totalScore = 10;
 		timer = game.time.create(false);
 		timer.loop(1000, this.deductScore, this);
 		timer.start();
@@ -76,12 +77,18 @@ level1.prototype = {
 		totalScore--;
 		if (totalScore <= 0) {
 			timer.stop();
-			loss = game.add.sprite(400, 200, 'loss');
-			loss.anchor.setTo(0.5, 0.5);
-
-			var retryBt = this.add.button(400, 400, 'retryBt', this.clickRetry, this, 2, 1, 0);
-			retryBt.anchor.setTo(0.5, 0.5);
+			this.gameOver;
 		}
+	},
+
+	gameOver: function() {
+		cumulateScore += totalScore;
+		
+		loss = game.add.sprite(400, 200, 'loss');
+		loss.anchor.setTo(0.5, 0.5);
+
+		var retryBt = this.add.button(400, 400, 'retryBt', this.clickRetry, this, 2, 1, 0);
+		retryBt.anchor.setTo(0.5, 0.5);
 	},
 
 	// creates a list of random inputs
@@ -90,9 +97,9 @@ level1.prototype = {
 		for (i = 0; i < num; i++) {
 			ranNum = Math.floor((Math.random() * 2))	// either 0 or 1
 			if (ranNum == 0) {
-				currInputs[i] = game.add.sprite(0, 0, 'white-knight');
+				currInputs[i] = game.add.sprite(0, 0, 'red-knight');
 			} else {
-				currInputs[i] = game.add.sprite(0, 0, 'grey-knight');
+				currInputs[i] = game.add.sprite(0, 0, 'yellow-knight');
 			}
 		}
 	},
@@ -102,10 +109,12 @@ level1.prototype = {
 		for (i = 0; i < num; i++) {
 			ranNum = Math.floor((Math.random() * 2))	// either 0 or 1
 			if (ranNum == 0) {
-				enemies[i] = game.add.sprite(0, 0, 'white-dragon');
+				enemies[i] = game.add.sprite(0, 0, 'red-dragon-sheet');
 			} else {
-				enemies[i] = game.add.sprite(0, 0, 'grey-dragon');
+				enemies[i] = game.add.sprite(0, 0, 'yellow-dragon-sheet');
 			}
+			enemies[i].animations.add('fly');
+			enemies[i].animations.play('fly', 1000, true);
 		}
 	},
 
@@ -156,7 +165,7 @@ level1.prototype = {
 	},
 
 	judgment: function() {
-		if ((result.key == "white-knight" && enemies[0].key == "white-dragon") || (result.key == "grey-knight" && enemies[0].key == "grey-dragon")) {
+		if ((result.key == "red-knight" && enemies[0].key == "red-dragon-sheet") || (result.key == "yellow-knight" && enemies[0].key == "yellow-dragon-sheet")) {
 			win = game.add.sprite(400, 300, 'win');
 			win.anchor.setTo(0.5, 0.5);
 			// if win, go to the next level
@@ -176,22 +185,22 @@ level1.prototype = {
 
 	showResult: function(sprite) {
 		if (sprite.key == "not-gate") {
-			if (currInputs[0].key == "white-knight") {
-				result = game.add.sprite(525, 250, 'grey-knight');
+			if (currInputs[0].key == "red-knight") {
+				result = game.add.sprite(525, 250, 'yellow-knight');
 				result.width = 100;
 				result.height = 100;
-			} else if (currInputs[0].key == "grey-knight") {
-				result = game.add.sprite(525, 250, 'white-knight');
+			} else if (currInputs[0].key == "yellow-knight") {
+				result = game.add.sprite(525, 250, 'red-knight');
 				result.width = 100;
 				result.height = 100;
 			}
 		} else if (sprite.key == "buffer-gate") {
-			if (currInputs[0].key == "white-knight") {
-				result = game.add.sprite(525, 250, 'white-knight');
+			if (currInputs[0].key == "red-knight") {
+				result = game.add.sprite(525, 250, 'red-knight');
 				result.width = 100;
 				result.height = 100;
-			} else if (currInputs[0].key == "grey-knight") {
-				result = game.add.sprite(525, 250, 'grey-knight');
+			} else if (currInputs[0].key == "yellow-knight") {
+				result = game.add.sprite(525, 250, 'yellow-knight');
 				result.width = 100;
 				result.height = 100;
 			}

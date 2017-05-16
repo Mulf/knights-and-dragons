@@ -35,7 +35,24 @@ controller.prototype = {
 		// title, background and white block
 		game.load.image('title', baseURL + 'kg-title.png');
 		game.load.image('background', baseURL + 'kg-background.jpg');
-		game.load.image('white-block', baseURL + 'white.png');
+		game.load.image('white-block', baseURL + 'kg-block.png');
+
+		// load knight spritesheet
+		game.load.image('red-knight', baseURL + 'kg-red-knight-idle.png');
+		game.load.image('yellow-knight', baseURL + 'kg-yellow-knight-idle.png');
+		game.load.spritesheet('red-knight-sheet', baseURL + 'kg-red-knight-spritesheet.png', 385, 385, 8);
+		game.load.spritesheet('yellow-knight-sheet', baseURL + 'kg-yellow-knight-spritesheet.png', 385, 385, 8);
+
+		// dragons
+		game.load.spritesheet('red-dragon-sheet', baseURL + 'kg-red-dragon-spritesheet.png', 949, 688, 4);
+		game.load.spritesheet('yellow-dragon-sheet', baseURL + 'kg-yellow-dragon-spritesheet.png', 949, 688, 4);
+
+		// dragzones
+		game.load.image('dropzone-1', baseURL + 'kg-block-1-input.png');
+		game.load.image('dropzone-2', baseURL + 'kg-block-2-input.png');
+		game.load.image('dropzone-3', baseURL + 'kg-block-3-input.png');
+		game.load.image('dropzone-4', baseURL + 'kg-block-4-input.png');
+		game.load.image('dropzone-5', baseURL + 'kg-block-5-input.png');
 
 		// logic gates
 		game.load.image('buffer-gate', baseURL + 'kg-buffer-gate.png');
