@@ -142,15 +142,9 @@ level1.prototype = {
 			sprite.x = dropZone.x;
 			sprite.y = dropZone.y;
 
-			//currInputs[0].animations.add('walk');
-			//currInputs[0].animations.play('walk', 500, true);
 			var movein = game.add.tween(currInputs[0]).to({x: 350}, 1000, Phaser.Easing.Linear.None, true);
 			movein.onStart.add(function() {this.startAnimation(currInputs[0])}, this);
-			//movein.onComplete.add(this.tweenAction, sprite);
-			var gate = sprite;
 			movein.onComplete.add(function() {this.showResult(sprite)}, this);
-			//this.showResult(sprite);
-			//this.judgment();
 		} else {
 			sprite.kill();
 		}
@@ -177,7 +171,6 @@ level1.prototype = {
 	},
 
 	showResult: function(sprite) {
-		console.log('here111');
 		currInputs[0].kill();
 		if (sprite.key == "not-gate") {
 			console.log('not-gate');
@@ -201,12 +194,9 @@ level1.prototype = {
 				result.height = 100;
 			}
 		}
-		//result.animations.add('walk');
-		//result.animations.play('walk', 500, true);
 		var moveout = game.add.tween(result).to({x: 525}, 1000, Phaser.Easing.Linear.None, true);
 		moveout.onStart.add(function() {this.startAnimation(result)}, this);
 		moveout.onComplete.add(function() {this.judgment()}, this);
-		//movein.chain(moveout);
 	},
 
 	startAnimation: function(sprite) {
