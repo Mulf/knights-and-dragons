@@ -21,7 +21,7 @@ settings.prototype = {
 
 		this.add.sprite(0, 0, 'background');
 		
-		homeButton = game.add.button(400, 250, 'homeButton', this.Home, this, 2, 1, 0);
+		homeButton = game.add.button(400, 250, 'homeBt', this.Home, this, 0, 1, 2);
 		homeButton.anchor.setTo(0.5, 0.5);
 		
 		// music button

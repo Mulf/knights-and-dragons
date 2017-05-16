@@ -55,7 +55,7 @@ menu.prototype = {
 		var settingsBt = this.add.button(400, 325, 'settingBt', this.clickSetting, this, 0, 1, 2);
 		settingsBt.anchor.setTo(0.5, 0.5);
 
-		var levelBt = this.add.button(400, 425, 'levelBt', this.clickSetting, this, 0, 1, 2);
+		var levelBt = this.add.button(400, 425, 'levelBt', this.clickLevel, this, 0, 1, 2);
 		levelBt.anchor.setTo(0.5, 0.5);
 		
 		var helpBt = this.add.button(400, 525, 'helpBt', this.clickHelp, this, 0, 1, 2);
@@ -72,6 +72,10 @@ menu.prototype = {
 
 	clickHelp: function(button) {	
 		game.state.start("help");
+	},
+
+	clickLevel: function(button) {
+		game.state.start("levelchoose");
 	},
 
 	addGameMusic: function() {	

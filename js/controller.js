@@ -7,6 +7,7 @@ controller.prototype = {
 
 	loadScripts: function () {
 		game.load.script('menu', '../js/menu.js');
+		game.load.script('levelchoose', '../js/levelchoose.js');
 		game.load.script('level1', '../js/level1.js');
 		game.load.script('level2', '../js/level2.js');
 		game.load.script('level3', '../js/level3.js');
@@ -38,11 +39,18 @@ controller.prototype = {
 		game.load.image('white-block', baseURL + 'kg-block.png');
 
 		// buttons
+		game.load.spritesheet('homeBt', baseURL + 'kg-home-bt-spritesheet.png', 238, 94, 3);
 		game.load.spritesheet('startBt', baseURL + 'kg-start-bt-spritesheet.png', 248, 96, 3);
 		game.load.spritesheet('settingBt', baseURL + 'kg-setting-bt-spritesheet.png', 305, 94, 3);
 		game.load.spritesheet('levelBt', baseURL + 'kg-level-bt-spritesheet.png', 245, 94, 3);
 		game.load.spritesheet('helpBt', baseURL + 'kg-help-bt-spritesheet.png', 210, 95, 3);
 		game.load.spritesheet('gobackBt', baseURL + 'kg-goback-bt-spritesheet.png', 339, 94, 3);
+
+		game.load.spritesheet('level1Bt', baseURL + 'kg-level1-spritesheet.png', 289, 94, 3);
+		game.load.spritesheet('level2Bt', baseURL + 'kg-level2-spritesheet.png', 295, 94, 3);
+		game.load.spritesheet('level3Bt', baseURL + 'kg-level3-spritesheet.png', 296, 94, 3);
+		game.load.spritesheet('level4Bt', baseURL + 'kg-level4-spritesheet.png', 302, 94, 3);
+		game.load.spritesheet('level5Bt', baseURL + 'kg-level5-spritesheet.png', 296, 94, 3);
 
 		// load knight spritesheet
 		game.load.image('red-knight', baseURL + 'kg-red-knight-idle.png');
@@ -84,16 +92,16 @@ controller.prototype = {
 		game.load.image('loss', baseURL + 'kg-loss-text.png');
 		game.load.spritesheet('retryBt', baseURL + 'kg-retry-text-sprite-sheet.png', 193, 71);
 
-		game.load.image('score0', baseURL + 'kg-text-0.png');
-		game.load.image('score1', baseURL + 'kg-text-1.png');
-		game.load.image('score2', baseURL + 'kg-text-2.png');
-		game.load.image('score3', baseURL + 'kg-text-3.png');
-		game.load.image('score4', baseURL + 'kg-text-4.png');
-		game.load.image('score5', baseURL + 'kg-text-5.png');
-		game.load.image('score6', baseURL + 'kg-text-6.png');
-		game.load.image('score7', baseURL + 'kg-text-7.png');
-		game.load.image('score8', baseURL + 'kg-text-8.png');
-		game.load.image('score9', baseURL + 'kg-text-9.png');
+		game.load.image('0-text', baseURL + 'kg-text-0.png');
+		game.load.image('1-text', baseURL + 'kg-text-1.png');
+		game.load.image('2-text', baseURL + 'kg-text-2.png');
+		game.load.image('3-text', baseURL + 'kg-text-3.png');
+		game.load.image('4-text', baseURL + 'kg-text-4.png');
+		game.load.image('5-text', baseURL + 'kg-text-5.png');
+		game.load.image('6-text', baseURL + 'kg-text-6.png');
+		game.load.image('7-text', baseURL + 'kg-text-7.png');
+		game.load.image('8-text', baseURL + 'kg-text-8.png');
+		game.load.image('9-text', baseURL + 'kg-text-9.png');
 	},
 	
 	preload: function() {
@@ -117,6 +125,7 @@ controller.prototype = {
 		game.state.add("help", help);
 		game.state.add("settings", settings);
 		game.state.add('menu', menu);
+		game.state.add('levelchoose', levelchoose);
 	}
 		
 };
