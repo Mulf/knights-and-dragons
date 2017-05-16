@@ -22,9 +22,9 @@ controller.prototype = {
 	},
 
 	loadImages: function() {
-		game.load.spritesheet('startBt', 'assets/button_sprite_sheet.png', 193, 71);
-		game.load.spritesheet('settingButton', 'assets/settingButton.png', 193, 71);
-		game.load.spritesheet('helpButton', 'assets/button_sprite_help.png', 193, 71);	
+		//game.load.spritesheet('startBt', 'assets/button_sprite_sheet.png', 193, 71);
+		//game.load.spritesheet('settingButton', 'assets/settingButton.png', 193, 71);
+		//game.load.spritesheet('helpButton', 'assets/button_sprite_help.png', 193, 71);	
 		game.load.spritesheet('continueButton', 'assets/Continue.png');
 		game.load.spritesheet('restartButton', 'assets/Restart.png');
 		game.load.spritesheet('homeButton', 'assets/Home.png');
@@ -36,6 +36,13 @@ controller.prototype = {
 		game.load.image('title', baseURL + 'kg-title.png');
 		game.load.image('background', baseURL + 'kg-background.jpg');
 		game.load.image('white-block', baseURL + 'kg-block.png');
+
+		// buttons
+		game.load.spritesheet('startBt', baseURL + 'kg-start-bt-spritesheet.png', 248, 96, 3);
+		game.load.spritesheet('settingBt', baseURL + 'kg-setting-bt-spritesheet.png', 305, 94, 3);
+		game.load.spritesheet('levelBt', baseURL + 'kg-level-bt-spritesheet.png', 245, 94, 3);
+		game.load.spritesheet('helpBt', baseURL + 'kg-help-bt-spritesheet.png', 210, 95, 3);
+		game.load.spritesheet('gobackBt', baseURL + 'kg-goback-bt-spritesheet.png', 339, 94, 3);
 
 		// load knight spritesheet
 		game.load.image('red-knight', baseURL + 'kg-red-knight-idle.png');
@@ -73,8 +80,8 @@ controller.prototype = {
 		game.load.image('grey-dragon', baseURL + 'kg-grey-dragon.png');
 
 		// win and loss messages
-		game.load.image('win', baseURL + 'win-msg.png');
-		game.load.image('loss', baseURL + 'loss-msg.png');
+		game.load.image('win', baseURL + 'kg-win-text.png');
+		game.load.image('loss', baseURL + 'kg-loss-text.png');
 		game.load.spritesheet('retryBt', baseURL + 'kg-retry-text-sprite-sheet.png', 193, 71);
 
 		game.load.image('score0', baseURL + 'kg-text-0.png');
