@@ -30,7 +30,6 @@ var retry;
 
 var currLevelScore = 100;
 var timerCount = 110;			// leave 10 more seconds to operate
-var totalScore = 100;
 var timer;
 
 level2 = function(game) {};
@@ -110,6 +109,7 @@ level2.prototype = {
 
 		// timer
 		currLevelScore = 100;
+		timerCount = 110;
 		timer = game.time.create(false);
 		timer.loop(1000, this.deductScore, this);
 		timer.start();

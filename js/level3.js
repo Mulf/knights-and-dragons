@@ -100,6 +100,7 @@ level3.prototype = {
 
 		// timer
 		currLevelScore = 100;
+		timerCount = 110;
 		timer = game.time.create(false);
 		timer.loop(1000, this.deductScore, this);
 		timer.start();

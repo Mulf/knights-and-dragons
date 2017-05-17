@@ -22,12 +22,6 @@ controller.prototype = {
 		game.load.audio('bgMusic', baseURL + 'My%20Little%20Adventure.mp3');
 	},
 
-	loadImages: function() {
-		game.load.spritesheet('continueButton', 'assets/Continue.png');
-		game.load.spritesheet('restartButton', 'assets/Restart.png');
-		game.load.spritesheet('nextButton', 'assets/Next.png'); 
-	},
-
 	loadGameIMG: function() {
 		// title, background and white block
 		game.load.image('title', baseURL + 'kg-title.png');
@@ -101,7 +95,6 @@ controller.prototype = {
 		this.loadScripts();
 		this.loadBGM();
 		this.loadGameIMG();
-		this.loadImages();
 	},
 
 	create: function() {
