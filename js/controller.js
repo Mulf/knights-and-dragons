@@ -61,6 +61,7 @@ controller.prototype = {
 		// dragons
 		game.load.spritesheet('red-dragon-sheet', baseURL + 'kg-red-dragon-spritesheet.png', 949, 688, 4);
 		game.load.spritesheet('yellow-dragon-sheet', baseURL + 'kg-yellow-dragon-spritesheet.png', 949, 688, 4);
+		game.load.spritesheet('kill-sheet', baseURL + 'kg-kill-spritesheet.png', 266, 266, 64);
 
 		// dragzones
 		game.load.image('dropzone-1', baseURL + 'kg-block-1-input.png');

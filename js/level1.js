@@ -226,23 +226,13 @@ level1.prototype = {
 		timer.stop();
 		this.stopAnimation(result);
 		if ((result.key == "red-knight-sheet" && enemies[0].key == "red-dragon-sheet") || (result.key == "yellow-knight-sheet" && enemies[0].key == "yellow-dragon-sheet")) {
-			win = game.add.sprite(400, 100, 'win');
-			win.anchor.setTo(0.5, 0.5);
-			// if win, show the score and go to the next level
-			if (currLevelScore == 100) {
-				this.placeNumSprite(1, 340, 300);
-				this.placeNumSprite(0, 380, 300);
-				this.placeNumSprite(0, 430, 300);
-			} else if (currLevelScore >=10) {
-				var num1 = currLevelScore % 10;
-				var num2 = Math.floor(currLevelScore / 10);
-				this.placeNumSprite(num2, 355, 300);
-				this.placeNumSprite(num1, 415, 300);
-			} else {
-				this.placeNumSprite(currLevelScore, 350, 300);
-			}
-			var continueBt = game.add.button(400, 500, 'continueBt', this.nextLevel, this, 0, 1, 2);
-			continueBt.anchor.setTo(0.5, 0.5);
+			var kill = game.add.sprite(650, 250, 'kill-sheet');
+			kill.width = 100;
+			kill.height = 100;
+			kill.animations.add('kill');
+			kill.animations.play('kill', 50, false);
+			enemies[0].kill();
+			kill.animations.currentAnim.onComplete.add(function() {this.gameWon()}, this);
 		} else {
 			loss = game.add.sprite(400, 200, 'loss');
 			loss.anchor.setTo(0.5, 0.5);
@@ -250,6 +240,26 @@ level1.prototype = {
 			var retryBt = this.add.button(400, 400, 'retryBt', this.clickRetry, this, 2, 1, 0);
 			retryBt.anchor.setTo(0.5, 0.5);
 		}
+	},
+
+	gameWon: function() {
+		win = game.add.sprite(400, 100, 'win');
+		win.anchor.setTo(0.5, 0.5);
+		// if win, show the score and go to the next level
+		if (currLevelScore == 100) {
+			this.placeNumSprite(1, 340, 300);
+			this.placeNumSprite(0, 380, 300);
+			this.placeNumSprite(0, 430, 300);
+		} else if (currLevelScore >= 10) {
+			var num1 = currLevelScore % 10;
+			var num2 = Math.floor(currLevelScore / 10);
+			this.placeNumSprite(num2, 355, 300);
+			this.placeNumSprite(num1, 415, 300);
+		} else {
+			this.placeNumSprite(currLevelScore, 350, 300);
+		}
+		var continueBt = game.add.button(400, 500, 'continueBt', this.nextLevel, this, 0, 1, 2);
+		continueBt.anchor.setTo(0.5, 0.5);
 	},
 
 	placeNumSprite: function(num, x, y) {
