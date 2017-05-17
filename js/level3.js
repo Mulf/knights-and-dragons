@@ -24,6 +24,13 @@ var enemies = [];
 var win;
 var loss;
 
+var retry;
+
+var currLevelScore = 100;
+var timerCount = 110;			// leave 10 more seconds to operate
+var totalScore = 100;
+var timer;
+
 level3 = function(game) {};
 
 level3.prototype = {
@@ -92,7 +99,7 @@ level3.prototype = {
 		this.setSpriteParams(enemies[0], 700, 300, 100, 100);
 
 		// timer
-		totalScore = 100;
+		currLevelScore = 100;
 		timer = game.time.create(false);
 		timer.loop(1000, this.deductScore, this);
 		timer.start();
@@ -103,15 +110,25 @@ level3.prototype = {
 	},
 
 	deductScore: function() {
-		totalScore--;
-		if (totalScore <= 0) {
-			timer.stop();
-			loss = game.add.sprite(400, 200, 'loss');
-			loss.anchor.setTo(0.5, 0.5);
-
-			var retryBt = this.add.button(400, 400, 'retryBt', this.clickRetry, this, 2, 1, 0);
-			retryBt.anchor.setTo(0.5, 0.5);
+		timerCount--;				// deduct timercount every second
+		if (timerCount <= 100) {
+			// when timercount less than 100, deduct curr score
+			currLevelScore--;
 		}
+
+		if (currLevelScore <= 0) {
+			currLevelScore = 0;
+			timer.stop();
+			this.gameOver;
+		}
+	},
+
+	gameOver: function() {
+		loss = game.add.sprite(400, 200, 'loss');
+		loss.anchor.setTo(0.5, 0.5);
+
+		var retryBt = this.add.button(400, 400, 'retryBt', this.clickRetry, this, 2, 1, 0);
+		retryBt.anchor.setTo(0.5, 0.5);
 	},
 
 	// creates a list of random inputs
@@ -226,12 +243,16 @@ level3.prototype = {
 	},
 
 	judgment: function() {
+		timer.stop();
 		this.stopAnimation(finalRes);
 		if ((finalRes.key == "red-knight-sheet" && enemies[0].key == "red-dragon-sheet") || (finalRes.key == "yellow-knight-sheet" && enemies[0].key == "yellow-dragon-sheet")) {
-			win = game.add.sprite(400, 300, 'win');
-			win.anchor.setTo(0.5, 0.5);
-			// if win, go to the next level
-			game.input.onDown.add(this.nextLevel, this);
+			var kill = game.add.sprite(700, 300, 'kill-sheet');
+			kill.width = 100;
+			kill.height = 100;
+			kill.animations.add('kill');
+			kill.animations.play('kill', 50, false);
+			enemies[0].kill();
+			kill.animations.currentAnim.onComplete.add(function() {this.gameWon()}, this);
 		} else {
 			loss = game.add.sprite(400, 200, 'loss');
 			loss.anchor.setTo(0.5, 0.5);
@@ -239,6 +260,50 @@ level3.prototype = {
 			var retryBt = this.add.button(400, 400, 'retryBt', this.clickRetry, this, 2, 1, 0);
 			retryBt.anchor.setTo(0.5, 0.5);
 		}
+	},
+
+	gameWon: function() {
+		win = game.add.sprite(400, 100, 'win');
+		win.anchor.setTo(0.5, 0.5);
+		// if win, show the score and go to the next level
+		if (currLevelScore == 100) {
+			this.placeNumSprite(1, 340, 300);
+			this.placeNumSprite(0, 380, 300);
+			this.placeNumSprite(0, 430, 300);
+		} else if (currLevelScore >= 10) {
+			var num1 = currLevelScore % 10;
+			var num2 = Math.floor(currLevelScore / 10);
+			this.placeNumSprite(num2, 355, 300);
+			this.placeNumSprite(num1, 415, 300);
+		} else {
+			this.placeNumSprite(currLevelScore, 350, 300);
+		}
+		var continueBt = game.add.button(400, 500, 'continueBt', this.nextLevel, this, 0, 1, 2);
+		continueBt.anchor.setTo(0.5, 0.5);
+	},
+
+	placeNumSprite: function(num, x, y) {
+		if (num == 0)
+			var numText = game.add.sprite(x, y, '0-text');
+		else if (num == 1)
+			var numText = game.add.sprite(x, y, '1-text');
+		else if (num == 2)
+			var numText = game.add.sprite(x, y, '2-text');
+		else if (num == 3)
+			var numText = game.add.sprite(x, y, '3-text');
+		else if (num == 4)
+			var numText = game.add.sprite(x, y, '4-text');
+		else if (num == 5)
+			var numText = game.add.sprite(x, y, '5-text');
+		else if (num == 6)
+			var numText = game.add.sprite(x, y, '6-text');
+		else if (num == 7)
+			var numText = game.add.sprite(x, y, '7-text');
+		else if (num == 8)
+			var numText = game.add.sprite(x, y, '8-text');
+		else if (num == 9)
+			var numText = game.add.sprite(x, y, '9-text');
+		numText.anchor.setTo(0.5, 0.5);
 	},
 
 	clickRetry: function() {
