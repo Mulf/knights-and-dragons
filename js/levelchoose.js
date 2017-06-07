@@ -27,6 +27,7 @@ levelchoose.prototype = {
 		homeBt.anchor.setTo(0.5, 0.5);
 	},
 
+	// the controller to control click to different levels
 	clickLevel1: function() {
 		game.state.start("level1");
 	},

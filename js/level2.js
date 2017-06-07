@@ -1,36 +1,28 @@
-var notGate;
-var bufGate;
-var whiteBlk;
-var background;
-var knight;
-
-var one;
-var zero;
-
+// the block size of this level
 var blkWidth = 100;
 var blkHeight = 100;
-var characterWidth = 30;
-var characterHeight = 30;
 
-var zoneFilled = [false, false, false, false];
-var dropZones = [];
+var zoneFilled = [false, false, false, false];	// indicates whether some zone has been filled
+var dropZones = [];								// the list of dragZones
 var dragPosition;
 
-var currInputs = [];		// an empty array for the inputs
-var result1;
+var currInputs = [];				// an empty array for the inputs
+
+// several results
+var result1;				
 var result2;
 var result3;
 var finalRes;
-var enemies = [];
+var enemies = [];					// the enemies list
 
-var win;
-var loss;
+var win;							// the win text
+var loss;							// the loss text
+var retry;							// the retry button	
 
-var retry;
-
-var currLevelScore = 100;
-var timerCount = 110;			// leave 10 more seconds to operate
-var timer;
+var currLevelScore = 100;			// the current level score
+var timerCount = 110;				// leave 10 more seconds to operate
+var timer;							// the timer of the game
+var timing = [];					// the timeing of each gate
 
 level2 = function(game) {};
 
@@ -41,14 +33,16 @@ level2.prototype = {
 	
 	create: function() {
 		// load the background
-		background = game.add.sprite(0, 0, 'background');
+		var background = game.add.sprite(0, 0, 'background');
 		background.width = 800;
 		background.height = 600;
 
+		// load the home button
 		var gamehomeBt = game.add.button(720, 30, 'homeBt', this.clickHome, this, 0, 1, 2);
 		gamehomeBt.scale.setTo(0.3, 0.3);
 		gamehomeBt.anchor.setTo(0.5, 0.5);
 
+		// set up the drapzones
 		dropZones[0] = game.add.sprite(150, 200, 'dropzone-2');
 		dropZones[1] = game.add.sprite(150, 200, 'dropzone-2');
 		dropZones[2] = game.add.sprite(150, 200, 'dropzone-2');
@@ -71,11 +65,12 @@ level2.prototype = {
 		dropZones[3].x = 500;
 		dropZones[3].y = 300;
 
-		notGate = game.add.sprite(10, 15, 'not-gate');
+		// set up the not and buffer gate
+		var notGate = game.add.sprite(10, 15, 'not-gate');
 		notGate.width = blkWidth;
 		notGate.height = blkHeight;
 
-		bufGate = game.add.sprite(110, 15, 'buffer-gate');
+		var bufGate = game.add.sprite(110, 15, 'buffer-gate');
 		bufGate.width = blkWidth;
 		bufGate.height = blkHeight;
 
@@ -99,6 +94,10 @@ level2.prototype = {
 		orGate.inputEnabled = true;
 		orGate.events.onInputDown.add(this.onGateClick, this);
 
+		// set up timing, inputs, and enemies
+		this.randomTimingGenerator(4);
+		this.putTimingOnGame(4);
+
 		this.randomInputGenerator(4);
 		for (i = 0; i < 4; i++) {
 			this.setSpriteParams(currInputs[i], 0, 150 + i * 100, 100, 100);
@@ -107,7 +106,7 @@ level2.prototype = {
 		this.randomEnemiesGenerator(1);
 		this.setSpriteParams(enemies[0], 700, 300, 100, 100);
 
-		// timer
+		// set the timer
 		currLevelScore = 100;
 		timerCount = 110;
 		timer = game.time.create(false);
@@ -115,17 +114,54 @@ level2.prototype = {
 		timer.start();
 	},
 
+	// put a timing delay to each gate
+	putTimingOnGame: function(num) {
+		for (i = 0; i < num; i++) {
+			switch(timing[i]) {
+				case 1:
+					var timingText = game.add.sprite(10 + i * 100, 75, '1-text');
+					break;
+				case 2:
+					var timingText = game.add.sprite(10 + i * 100, 75, '2-text');
+					break;
+				case 3:
+					var timingText = game.add.sprite(10 + i * 100, 75, '3-text');
+					break;
+				case 4:
+					var timingText = game.add.sprite(10 + i * 100, 75, '4-text');
+					break;
+				case 5:
+					var timingText = game.add.sprite(10 + i * 100, 75, '5-text');
+					break;
+				case 6:
+					var timingText = game.add.sprite(10 + i * 100, 75, '6-text');
+					break;
+				case 7:
+					var timingText = game.add.sprite(10 + i * 100, 75, '7-text');
+					break;
+				case 8:
+					var timingText = game.add.sprite(10 + i * 100, 75, '8-text');
+					break;
+				case 9:
+					var timingText = game.add.sprite(10 + i * 100, 75, '9-text');
+					break;
+			}
+		}
+	},
+
+	// click the home button
 	clickHome: function() {
 		game.state.start("menu");
 	},
 
+	// deduct the score for each second after 100 seconds
 	deductScore: function() {
 		timerCount--;				// deduct timercount every second
 		if (timerCount <= 100) {
-			// when timercount less than 100, deduct curr score
+			// when timercount less than 100, deduct current score
 			currLevelScore--;
 		}
-
+		// when the current score reaches 0, game over
 		if (currLevelScore <= 0) {
 			currLevelScore = 0;
 			timer.stop();
@@ -133,6 +169,7 @@ level2.prototype = {
 		}
 	},
 
+	// when game oevr, display loss msg and retry
 	gameOver: function() {
 		loss = game.add.sprite(400, 200, 'loss');
 		loss.anchor.setTo(0.5, 0.5);
@@ -154,6 +191,7 @@ level2.prototype = {
 		}
 	},
 
+	// generate randomly colored enemies
 	randomEnemiesGenerator: function(num) {
 		var ranNum;
 		for (i = 0; i < num; i++) {
@@ -168,6 +206,16 @@ level2.prototype = {
 		}
 	},
 
+	// generate randomly timing from 1-9
+	randomTimingGenerator: function(num) {
+		var ranNum;
+		for (i = 0; i < num; i++) {
+			ranNum = Math.floor((Math.random() * 8) + 1)	// 1-9
+			timing[i] = ranNum;
+		}
+	},
+
+	// the effect of gates
 	onOver: function(sprite, pointer) {
 		sprite.tint = 0xff7777;
 	},
@@ -176,6 +224,7 @@ level2.prototype = {
 		sprite.tint = 0xffffff;
 	},
 
+	// when click the gate, generate a duplicate gate and set it to dragable
 	onGateClick: function(sprite) {
 		var spriteDup = game.add.sprite(sprite.x + 10, sprite.y + 10, sprite.key, sprite.frame);
 		spriteDup.width = blkWidth;
@@ -183,10 +232,12 @@ level2.prototype = {
 		this.setToDragable(spriteDup);
 	},
 
+	// when the dragging start, change the pos accordingly
 	onDragStart: function(sprite, pointer) {
 		dragPosition.set(sprite.x, sprite.y);
 	},
 
+	// when the user drap the gate, if the gate is overlapped with the door, place it onto, otherwise killed
 	onDragStop: function(sprite, pointer) {
 		// Note: dropZone 0, 1, 2 accepts or/and, 3 accepts not/buffer
 		if (sprite.overlap(dropZones[0])) {
@@ -256,6 +307,7 @@ level2.prototype = {
 		}
 	},
 
+	// two methods that control the animations
 	startAnimation: function(sprite) {
 		sprite.animations.add('walk');
 		sprite.animations.play('walk', 500, true);
@@ -265,10 +317,12 @@ level2.prototype = {
 		sprite.animations.stop(null, true);
 	},
 
+	// start the next level on click
 	nextLevel: function(event) {
 		game.state.start("level3");	
 	},
 	
+	// set the gate as draggable
 	setToDragable: function(sprite) {
 		sprite.inputEnabled = true;
 		sprite.input.enableDrag();
@@ -281,6 +335,7 @@ level2.prototype = {
 		dragPosition = new Phaser.Point(sprite.x, sprite.y);
 	},
 
+	// judge whether the final result matches, display win/loss accordingly
 	judgment: function() {
 		timer.stop();
 		this.stopAnimation(finalRes);
@@ -301,6 +356,7 @@ level2.prototype = {
 		}
 	},
 
+	// game won, display the score
 	gameWon: function() {
 		win = game.add.sprite(400, 100, 'win');
 		win.anchor.setTo(0.5, 0.5);
@@ -317,10 +373,16 @@ level2.prototype = {
 		} else {
 			this.placeNumSprite(currLevelScore, 350, 300);
 		}
-		var continueBt = game.add.button(400, 500, 'continueBt', this.nextLevel, this, 0, 1, 2);
-		continueBt.anchor.setTo(0.5, 0.5);
+		var saveBt = game.add.button(400, 500, 'saveBt', this.saveGameScore, this, 0, 1, 2);
+		saveBt.anchor.setTo(0.5, 0.5);
 	},
 
+	// save the game to the byte hunter system
+	saveGameScore: function() {
+		window.saveScore(currLevelScore);
+	},
+
+	// place the number to the desigated place
 	placeNumSprite: function(num, x, y) {
 		if (num == 0)
 			var numText = game.add.sprite(x, y, '0-text');
@@ -349,6 +411,7 @@ level2.prototype = {
 		game.state.start("level2");
 	},
 
+	// set the params of a sprite
 	setSpriteParams: function(sprite, x, y, width, height) {
 		sprite.x = x;
 		sprite.y = y;
@@ -356,6 +419,7 @@ level2.prototype = {
 		sprite.height = height;
 	},
 
+	// generate the output of buffer gate
 	bufferGateOutput: function(sprite) {
 		// accepts a sprite and pass it
 		var bufRes;
@@ -366,6 +430,7 @@ level2.prototype = {
 		return bufRes;
 	},
 
+	// generate the output of not gate
 	notGateOutput: function(sprite) {
 		// accepts a sprite and revert it
 		var notRes;
@@ -376,6 +441,7 @@ level2.prototype = {
 		return notRes;
 	},
 
+	// generate the output of and gate
 	andGateOutput: function(sprites) {
 		// accepts an array of sprites and return a result, the params of the result is up-to the game
 		var andRes;
@@ -391,6 +457,7 @@ level2.prototype = {
 		return andRes;
 	},
 
+	// generate the output of or gate
 	orGateOutput: function(sprites) {
 		// accepts an array of sprites and return a result, the params of the result is up-to the game
 		var orRes;
@@ -406,9 +473,11 @@ level2.prototype = {
 		return orRes;
 	},
 
+	// show the result once the gate is placed
 	showResult: function(sprite, num) {
 		var inputArray = [];
 		if (sprite.key == "and-gate") {
+			currLevelScore -= timing[2];
 	        // only produce white when both are white
 	        if (num == 1) {
 	            // curr1 and curr2
@@ -445,6 +514,7 @@ level2.prototype = {
 				moveout3.onComplete.add(function() {this.stopAnimation(result3)}, this);
 	        }
 	    } else if (sprite.key == "or-gate") {
+	    	currLevelScore -= timing[3];
 	        // only produce white when both are white
 	        if (num == 1) {
 	            // curr1 and curr2
@@ -481,6 +551,7 @@ level2.prototype = {
 				moveout3.onComplete.add(function() {this.stopAnimation(result3)}, this);
 	        }
 	    } else if (sprite.key == "buffer-gate") {
+	    	currLevelScore -= timing[1];
 	    	finalRes = this.bufferGateOutput(result3);
 	    	result3.kill();
 	        this.setSpriteParams(finalRes, 500, 300, 100, 100);
@@ -488,6 +559,7 @@ level2.prototype = {
 			moveout4.onStart.add(function() {this.startAnimation(finalRes)}, this);
 			moveout4.onComplete.add(function() {this.judgment()}, this);
 	    } else if (sprite.key == "not-gate") {
+	    	currLevelScore -= timing[0];
 	    	finalRes = this.notGateOutput(result3);
 	    	result3.kill();
 	        this.setSpriteParams(finalRes, 500, 300, 100, 100);

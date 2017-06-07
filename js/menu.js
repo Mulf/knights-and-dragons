@@ -9,6 +9,41 @@ menu.prototype = {
 
 	create: function() {
 
+		switch(window.vue.currentLevel) {
+			case 1:
+				game.state.start("level1");
+				break;
+			case 2:
+				game.state.start("level2");
+				break;
+			case 3:
+				game.state.start("level3");
+				break;
+			case 4:
+				game.state.start("level4");
+				break;
+			case 5:
+				game.state.start("level5");
+				break;
+			case "1":
+				game.state.start("level1");
+				break;
+			case "2":
+				game.state.start("level2");
+				break;
+			case "3":
+				game.state.start("level3");
+				break;
+			case "4":
+				game.state.start("level4");
+				break;
+			case "5":
+				game.state.start("level5");
+				break;
+			default:
+				game.state.start("level1");
+		}
+
 		if(preload == 1) {
 			this.addGameMusic();			
 			preload = 0;			
@@ -52,8 +87,8 @@ menu.prototype = {
 		var startBt = this.add.button(400, 225, 'startBt', this.clickStart, this, 0, 1, 2);
 		startBt.anchor.setTo(0.5, 0.5);
 		
-		var settingsBt = this.add.button(400, 325, 'settingBt', this.clickSetting, this, 0, 1, 2);
-		settingsBt.anchor.setTo(0.5, 0.5);
+		//var settingsBt = this.add.button(400, 325, 'settingBt', this.clickSetting, this, 0, 1, 2);
+		//settingsBt.anchor.setTo(0.5, 0.5);
 
 		var levelBt = this.add.button(400, 425, 'levelBt', this.clickLevel, this, 0, 1, 2);
 		levelBt.anchor.setTo(0.5, 0.5);

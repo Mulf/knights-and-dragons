@@ -1,32 +1,22 @@
-var notGate;
-var bufGate;
-var whiteBlk;
-var background;
-var knight;
-
-var one;
-var zero;
-
-var blkWidth = 100;
+var blkWidth = 100;					// the block size
 var blkHeight = 100;
 
-var dropZone;
+var dropZone;						// dragzone
 var dragPosition;
 
-var currInputs = [];		// an empty array for the inputs
-var result;
-var enemies = [];
+var currInputs = [];				// an empty array for the inputs
+var result;							// the final result
+var enemies = [];					// the enemies list
 
-var win;
-var loss;
-var retry;
+var win;							// the win text
+var loss;							// the loss text
+var retry;							// the retry button	
 
-var currLevelScore = 100;
-var timerCount = 110;			// leave 10 more seconds to operate
-var totalScore = 100;
-var timer;
+var currLevelScore = 100;			// the current level score
+var timerCount = 110;				// leave 10 more seconds to operate
+var timer;							// the timer of the game
 
-level1 = function(game) {};
+var level1 = function(game) {};
 
 level1.prototype = {
 	preload: function() {
@@ -34,24 +24,27 @@ level1.prototype = {
 	},
 	
 	create: function() {
-
-		background = game.add.sprite(0, 0, 'background');
+		// place the background
+		var background = game.add.sprite(0, 0, 'background');
 		background.width = 800;
 		background.height = 600;
 
+		// place the game home button to the upper right corner
 		var gamehomeBt = game.add.button(720, 30, 'homeBt', this.clickHome, this, 0, 1, 2);
 		gamehomeBt.scale.setTo(0.3, 0.3);
 		gamehomeBt.anchor.setTo(0.5, 0.5);
 
+		// place the drag zone
 		dropZone = game.add.sprite(350, 250, 'dropzone-1');
 		dropZone.width = blkWidth;
 		dropZone.height = blkHeight;
 
-		notGate = game.add.sprite(50, 50, 'not-gate');
+		// place the two gates, not and buffer gates
+		var notGate = game.add.sprite(50, 50, 'not-gate');
 		notGate.width = blkWidth;
 		notGate.height = blkHeight;
 
-		bufGate = game.add.sprite(175, 50, 'buffer-gate');
+		var bufGate = game.add.sprite(175, 50, 'buffer-gate');
 		bufGate.width = blkWidth;
 		bufGate.height = blkHeight;
 
@@ -61,6 +54,7 @@ level1.prototype = {
 		notGate.inputEnabled = true;
 		notGate.events.onInputDown.add(this.onGateClick, this);
 
+		// randomly generate inputs and enemy
 		this.randomInputGenerator(1);
 		currInputs[0].x = 175;
 		currInputs[0].y = 250
@@ -81,17 +75,19 @@ level1.prototype = {
 		timer.start();
 	},
 
+	// check home button to return to the menu
 	clickHome: function() {
 		game.state.start("menu");
 	},
 
+	// deduct current level score every one second after the initial 10 seconds
 	deductScore: function() {
 		timerCount--;				// deduct timercount every second
 		if (timerCount <= 100) {
 			// when timercount less than 100, deduct curr score
 			currLevelScore--;
 		}
-
+		// when the score reaches 0, stop the timer and call game over
 		if (currLevelScore <= 0) {
 			currLevelScore = 0;
 			timer.stop();
@@ -99,6 +95,7 @@ level1.prototype = {
 		}
 	},
 
+	// Game over: display the loss text and retry button 
 	gameOver: function() {
 		loss = game.add.sprite(400, 200, 'loss');
 		loss.anchor.setTo(0.5, 0.5);
@@ -120,6 +117,7 @@ level1.prototype = {
 		}
 	},
 
+	// create a list of random enemies
 	randomEnemiesGenerator: function(num) {
 		var ranNum;
 		for (i = 0; i < num; i++) {
@@ -134,6 +132,7 @@ level1.prototype = {
 		}
 	},
 
+	// the effects of the gates
 	onOver: function(sprite, pointer) {
 		sprite.tint = 0xff7777;
 	},
@@ -142,6 +141,7 @@ level1.prototype = {
 		sprite.tint = 0xffffff;
 	},
 
+	// when click the gate, generate a duplicate gate and set it to dragable
 	onGateClick: function(sprite) {
 		var spriteDup = game.add.sprite(sprite.x + 10, sprite.y + 10, sprite.key, sprite.frame);
 		spriteDup.width = blkWidth;
@@ -149,10 +149,12 @@ level1.prototype = {
 		this.setToDragable(spriteDup);
 	},
 
+	// when the dragging start, change the pos accordingly
 	onDragStart: function(sprite, pointer) {
 		dragPosition.set(sprite.x, sprite.y);
 	},
 
+	// when the user drap the gate, if the gate is overlapped with the door, place it onto, otherwise killed
 	onDragStop: function(sprite, pointer) {
 		if (sprite.overlap(dropZone)) {
 			sprite.x = dropZone.x;
@@ -166,10 +168,12 @@ level1.prototype = {
 		}
 	},
 
+	// start the next level on click
 	nextLevel: function(event) {
 		game.state.start("level2");	
 	},
 	
+	// set the gate as draggable
 	setToDragable: function(sprite) {
 		sprite.inputEnabled = true;
 		sprite.input.enableDrag();
@@ -182,13 +186,16 @@ level1.prototype = {
 		dragPosition = new Phaser.Point(sprite.x, sprite.y);
 	},
 
+	// retry the game state on click
 	clickRetry: function() {
 		game.state.start("level1");
 	},
 
+	// show the result once the gate is placed
 	showResult: function(sprite) {
-		currInputs[0].kill();
+		currInputs[0].kill();					// kill the input after the input pass the door
 		if (sprite.key == "not-gate") {
+			// if it's a NOT gate, reverse the color
 			if (currInputs[0].key == "red-knight-sheet") {
 				result = game.add.sprite(350, 250, 'yellow-knight-sheet');
 				result.width = 100;
@@ -199,6 +206,7 @@ level1.prototype = {
 				result.height = 100;
 			}
 		} else {
+			// if it's a buffer gate, just pass it without changing the color
 			if (currInputs[0].key == "red-knight-sheet") {
 				result = game.add.sprite(350, 250, 'red-knight-sheet');
 				result.width = 100;
@@ -214,6 +222,7 @@ level1.prototype = {
 		moveout.onComplete.add(function() {this.judgment()}, this);
 	},
 
+	// animation functions
 	startAnimation: function(sprite) {
 		sprite.animations.add('walk');
 		sprite.animations.play('walk', 500, true);
@@ -223,10 +232,12 @@ level1.prototype = {
 		sprite.animations.stop(null, true);
 	},
 
+	// judge whether the final result matches, display win/loss accordingly
 	judgment: function() {
-		timer.stop();
-		this.stopAnimation(result);
+		timer.stop();							// stop the timer
+		this.stopAnimation(result);				// stop the animation
 		if ((result.key == "red-knight-sheet" && enemies[0].key == "red-dragon-sheet") || (result.key == "yellow-knight-sheet" && enemies[0].key == "yellow-dragon-sheet")) {
+			// color matches, kill the enemy and display win
 			var kill = game.add.sprite(650, 250, 'kill-sheet');
 			kill.width = 100;
 			kill.height = 100;
@@ -235,6 +246,7 @@ level1.prototype = {
 			enemies[0].kill();
 			kill.animations.currentAnim.onComplete.add(function() {this.gameWon()}, this);
 		} else {
+			// otherwise loss
 			loss = game.add.sprite(400, 200, 'loss');
 			loss.anchor.setTo(0.5, 0.5);
 
@@ -243,6 +255,7 @@ level1.prototype = {
 		}
 	},
 
+	// game won, display the score
 	gameWon: function() {
 		win = game.add.sprite(400, 100, 'win');
 		win.anchor.setTo(0.5, 0.5);
@@ -259,10 +272,16 @@ level1.prototype = {
 		} else {
 			this.placeNumSprite(currLevelScore, 350, 300);
 		}
-		var continueBt = game.add.button(400, 500, 'continueBt', this.nextLevel, this, 0, 1, 2);
-		continueBt.anchor.setTo(0.5, 0.5);
+		var saveBt = game.add.button(400, 500, 'saveBt', this.saveGameScore, this, 0, 1, 2);
+		saveBt.anchor.setTo(0.5, 0.5);
 	},
 
+	// save the game to the byte hunter system
+	saveGameScore: function() {
+		window.saveScore(currLevelScore);
+	},
+
+	// place the number to the desigated place
 	placeNumSprite: function(num, x, y) {
 		if (num == 0)
 			var numText = game.add.sprite(x, y, '0-text');

@@ -1,24 +1,25 @@
 var baseURL = 'https://storage.googleapis.com/bytehunter_images/knights-and-dragons/';
-var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game'),
+var baseScriptURL = 'https://storage.googleapis.com/bytehunter_images/knights-and-dragons/game/';
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'gameView');
 
 controller = function(game) {};
 
 controller.prototype = {
 
 	loadScripts: function () {
-		game.load.script('menu', '../js/menu.js');
-		game.load.script('levelchoose', '../js/levelchoose.js');
-		game.load.script('level1', '../js/level1.js');
-		game.load.script('level2', '../js/level2.js');
-		game.load.script('level3', '../js/level3.js');
-		game.load.script('level4', '../js/level4.js');
-		game.load.script('level5', '../js/level5.js');
-		game.load.script('help', '../js/help.js');
-		game.load.script('settings', '../js/settings.js');
+		game.load.crossOrigin = 'anonymous';
+		game.load.script('menu', baseScriptURL + 'menu.js');
+		game.load.script('levelchoose', baseScriptURL + 'levelchoose.js');
+		game.load.script('level1', baseScriptURL + 'level1.js');
+		game.load.script('level2', baseScriptURL + 'level2.js');
+		game.load.script('level3', baseScriptURL + 'level3.js');
+		game.load.script('level4', baseScriptURL + 'level4.js');
+		game.load.script('level5', baseScriptURL + 'level5.js');
+		game.load.script('help', baseScriptURL + 'help.js');
+		game.load.script('settings', baseScriptURL + 'settings.js');
 	},
 
 	loadBGM: function() {
-		game.load.crossOrigin = 'anonymous';
 		game.load.audio('bgMusic', baseURL + 'My%20Little%20Adventure.mp3');
 	},
 
@@ -36,6 +37,7 @@ controller.prototype = {
 		game.load.spritesheet('helpBt', baseURL + 'kg-help-bt-spritesheet.png', 210, 95, 3);
 		game.load.spritesheet('gobackBt', baseURL + 'kg-goback-bt-spritesheet.png', 339, 94, 3);
 		game.load.spritesheet('continueBt', baseURL + 'kg-continue-bt-spritesheet.png', 339, 94, 3);
+		game.load.spritesheet('saveBt', baseURL + 'kg-save-bt-spritesheet.png', 215, 94, 3);
 
 		game.load.spritesheet('level1Bt', baseURL + 'kg-level1-spritesheet.png', 289, 94, 3);
 		game.load.spritesheet('level2Bt', baseURL + 'kg-level2-spritesheet.png', 295, 94, 3);

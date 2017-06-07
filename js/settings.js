@@ -36,6 +36,7 @@ settings.prototype = {
 		game.state.start("menu");
 	},
 
+	
 	setMusicBt: function() {
 		musicPlay = !musicPlay;
 		if(musicPlay) {

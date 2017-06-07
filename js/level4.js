@@ -1,7 +1,3 @@
-var notGate;
-var bufGate;
-var whiteBlk;
-var background;
 var blkWidth = 100;
 var blkHeight = 100;
 
@@ -16,15 +12,14 @@ var result3;
 var finalRes;
 var enemies = [];
 
-var win;
-var loss;
+var win;							// the win text
+var loss;							// the loss text
+var retry;							// the retry button	
 
-var retry;
-
-var currLevelScore = 100;
-var timerCount = 110;			// leave 10 more seconds to operate
-var totalScore = 100;
-var timer;
+var currLevelScore = 100;			// the current level score
+var timerCount = 110;				// leave 10 more seconds to operate
+var timer;							// the timer of the game
+var timing = [];					// the timeing of each gate
 
 level4 = function(game) {};
 
@@ -35,7 +30,7 @@ level4.prototype = {
 	
 	create: function() {
 		// load the background
-		background = game.add.sprite(0, 0, 'background');
+		var background = game.add.sprite(0, 0, 'background');
 		background.width = 800;
 		background.height = 600;
 
@@ -65,19 +60,19 @@ level4.prototype = {
 		dropZones[3].x = 500;
 		dropZones[3].y = 350;
 
-		notGate = game.add.sprite(10, 15, 'not-gate');
+		var notGate = game.add.sprite(10, 15, 'not-gate');
 		notGate.width = blkWidth;
 		notGate.height = blkHeight;
 
-		bufGate = game.add.sprite(110, 15, 'buffer-gate');
+		var bufGate = game.add.sprite(110, 15, 'buffer-gate');
 		bufGate.width = blkWidth;
 		bufGate.height = blkHeight;
 
-		xorGate = game.add.sprite(210, 15, 'xor-gate');
+		var xorGate = game.add.sprite(210, 15, 'xor-gate');
 		xorGate.width = blkWidth;
 		xorGate.height = blkHeight;
 
-		nandGate = game.add.sprite(310, 15, 'nand-gate');
+		var nandGate = game.add.sprite(310, 15, 'nand-gate');
 		nandGate.width = blkWidth;
 		nandGate.height = blkHeight;
 
@@ -93,6 +88,9 @@ level4.prototype = {
 		nandGate.inputEnabled = true;
 		nandGate.events.onInputDown.add(this.onGateClick, this);
 
+		this.randomTimingGenerator(4);
+		this.putTimingOnGame(4);
+
 		this.randomInputGenerator(4);
 		for (i = 0; i < 4; i++) {
 			this.setSpriteParams(currInputs[i], 0, 150 + i * 100, 100, 100);
@@ -107,6 +105,40 @@ level4.prototype = {
 		timer = game.time.create(false);
 		timer.loop(1000, this.deductScore, this);
 		timer.start();
+	},
+
+	putTimingOnGame: function(num) {
+		for (i = 0; i < num; i++) {
+			switch(timing[i]) {
+				case 1:
+					var timingText = game.add.sprite(10 + i * 100, 75, '1-text');
+					break;
+				case 2:
+					var timingText = game.add.sprite(10 + i * 100, 75, '2-text');
+					break;
+				case 3:
+					var timingText = game.add.sprite(10 + i * 100, 75, '3-text');
+					break;
+				case 4:
+					var timingText = game.add.sprite(10 + i * 100, 75, '4-text');
+					break;
+				case 5:
+					var timingText = game.add.sprite(10 + i * 100, 75, '5-text');
+					break;
+				case 6:
+					var timingText = game.add.sprite(10 + i * 100, 75, '6-text');
+					break;
+				case 7:
+					var timingText = game.add.sprite(10 + i * 100, 75, '7-text');
+					break;
+				case 8:
+					var timingText = game.add.sprite(10 + i * 100, 75, '8-text');
+					break;
+				case 9:
+					var timingText = game.add.sprite(10 + i * 100, 75, '9-text');
+					break;
+			}
+		}
 	},
 
 	clickHome: function() {
@@ -161,6 +193,14 @@ level4.prototype = {
 			}
 			enemies[i].animations.add('fly');
 			enemies[i].animations.play('fly', 1000, true);
+		}
+	},
+
+	randomTimingGenerator: function(num) {
+		var ranNum;
+		for (i = 0; i < num; i++) {
+			ranNum = Math.floor((Math.random() * 8) + 1)	// 1-9
+			timing[i] = ranNum;
 		}
 	},
 
@@ -316,8 +356,12 @@ level4.prototype = {
 		} else {
 			this.placeNumSprite(currLevelScore, 350, 300);
 		}
-		var continueBt = game.add.button(400, 500, 'continueBt', this.nextLevel, this, 0, 1, 2);
-		continueBt.anchor.setTo(0.5, 0.5);
+		var saveBt = game.add.button(400, 500, 'saveBt', this.saveGameScore, this, 0, 1, 2);
+		saveBt.anchor.setTo(0.5, 0.5);
+	},
+
+	saveGameScore: function() {
+		window.saveScore(currLevelScore);
 	},
 
 	placeNumSprite: function(num, x, y) {
@@ -428,6 +472,7 @@ level4.prototype = {
 	showResult: function(sprite, num) {
 		var inputArray = [];
 		if (sprite.key == "nand-gate") {
+			currLevelScore -= timing[3];
 	        // only produce white when both are white
 	        if (num == 1) {
 	            // curr1, curr2 and curr3
@@ -456,6 +501,7 @@ level4.prototype = {
 				moveout2.onComplete.add(function() {this.stopAnimation(result3)}, this);
 	        }
 	    } else if (sprite.key == "xor-gate") {
+	    	currLevelScore -= timing[2];
 	        if (num == 1) {
 	            // curr1, curr2 and curr3
 	            inputArray[0] = currInputs[0];
@@ -483,6 +529,7 @@ level4.prototype = {
 				moveout2.onComplete.add(function() {this.stopAnimation(result3)}, this);
 	        }
 	    } else if (sprite.key == "buffer-gate") {
+	    	currLevelScore -= timing[1];
 	    	if (num == 2) {
 	            result2 = this.bufferGateOutput(currInputs[3]);
 	            currInputs[3].kill();
@@ -502,6 +549,7 @@ level4.prototype = {
 				moveout2.onComplete.add(function() {this.judgment()}, this);
 	        }
 	    } else if (sprite.key == "not-gate") {
+	    	currLevelScore -= timing[0];
 	    	if (num == 2) {
 	            result2 = this.notGateOutput(currInputs[3]);
 	            currInputs[3].kill();

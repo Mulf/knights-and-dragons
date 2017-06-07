@@ -1,35 +1,24 @@
-var notGate;
-var bufGate;
-var whiteBlk;
-var background;
-var knight;
-
-var one;
-var zero;
-
+// the block size of this level
 var blkWidth = 100;
 var blkHeight = 100;
-var characterWidth = 30;
-var characterHeight = 30;
 
-var zoneFilled = [false, false, false, false];
-var dropZones = [];
-var dragPosition;
+var zoneFilled = [false, false, false, false];		// indicates whether some zone has been filled
+var dropZones = [];									// the list of dragZones
+var dragPosition;									// the drag position
 
-var currInputs = [];		// an empty array for the inputs
-var result1;
-var finalRes;
-var enemies = [];
+var currInputs = [];								// an empty array for the inputs
+var result1;										// the result1 of the game
+var finalRes;										// the final result
+var enemies = [];									// the enemy list
 
-var win;
-var loss;
+var win;							// the win text
+var loss;							// the loss text
+var retry;							// the retry button	
 
-var retry;
-
-var currLevelScore = 100;
-var timerCount = 110;			// leave 10 more seconds to operate
-var totalScore = 100;
-var timer;
+var currLevelScore = 100;			// the current level score
+var timerCount = 110;				// leave 10 more seconds to operate
+var timer;							// the timer of the game
+var timing = [];					// the timeing of each gate
 
 level3 = function(game) {};
 
@@ -40,7 +29,7 @@ level3.prototype = {
 	
 	create: function() {
 		// load the background
-		background = game.add.sprite(0, 0, 'background');
+		var background = game.add.sprite(0, 0, 'background');
 		background.width = 800;
 		background.height = 600;
 
@@ -62,19 +51,19 @@ level3.prototype = {
 		dropZones[1].x = 450;
 		dropZones[1].y = 300;
 
-		notGate = game.add.sprite(50, 25, 'not-gate');
+		var notGate = game.add.sprite(10, 15, 'not-gate');
 		notGate.width = blkWidth;
 		notGate.height = blkHeight;
 
-		bufGate = game.add.sprite(175, 25, 'buffer-gate');
+		var bufGate = game.add.sprite(110, 15, 'buffer-gate');
 		bufGate.width = blkWidth;
 		bufGate.height = blkHeight;
 
-		andGate = game.add.sprite(300, 25, 'and-gate');
+		var andGate = game.add.sprite(210, 15, 'and-gate');
 		andGate.width = blkWidth;
 		andGate.height = blkHeight;
 
-		orGate = game.add.sprite(425, 25, 'or-gate');
+		var orGate = game.add.sprite(310, 15, 'or-gate');
 		orGate.width = blkWidth;
 		orGate.height = blkHeight;
 
@@ -90,6 +79,9 @@ level3.prototype = {
 		orGate.inputEnabled = true;
 		orGate.events.onInputDown.add(this.onGateClick, this);
 
+		this.randomTimingGenerator(4);
+		this.putTimingOnGame(4);
+
 		this.randomInputGenerator(4);
 		for (i = 0; i < 4; i++) {
 			this.setSpriteParams(currInputs[i], 0, 150 + i * 100, 100, 100);
@@ -104,6 +96,40 @@ level3.prototype = {
 		timer = game.time.create(false);
 		timer.loop(1000, this.deductScore, this);
 		timer.start();
+	},
+
+	putTimingOnGame: function(num) {
+		for (i = 0; i < num; i++) {
+			switch(timing[i]) {
+				case 1:
+					var timingText = game.add.sprite(10 + i * 100, 75, '1-text');
+					break;
+				case 2:
+					var timingText = game.add.sprite(10 + i * 100, 75, '2-text');
+					break;
+				case 3:
+					var timingText = game.add.sprite(10 + i * 100, 75, '3-text');
+					break;
+				case 4:
+					var timingText = game.add.sprite(10 + i * 100, 75, '4-text');
+					break;
+				case 5:
+					var timingText = game.add.sprite(10 + i * 100, 75, '5-text');
+					break;
+				case 6:
+					var timingText = game.add.sprite(10 + i * 100, 75, '6-text');
+					break;
+				case 7:
+					var timingText = game.add.sprite(10 + i * 100, 75, '7-text');
+					break;
+				case 8:
+					var timingText = game.add.sprite(10 + i * 100, 75, '8-text');
+					break;
+				case 9:
+					var timingText = game.add.sprite(10 + i * 100, 75, '9-text');
+					break;
+			}
+		}
 	},
 
 	clickHome: function() {
@@ -157,6 +183,14 @@ level3.prototype = {
 			}
 			enemies[i].animations.add('fly');
 			enemies[i].animations.play('fly', 1000, true);
+		}
+	},
+
+	randomTimingGenerator: function(num) {
+		var ranNum;
+		for (i = 0; i < num; i++) {
+			ranNum = Math.floor((Math.random() * 8) + 1)	// 1-9
+			timing[i] = ranNum;
 		}
 	},
 
@@ -279,8 +313,12 @@ level3.prototype = {
 		} else {
 			this.placeNumSprite(currLevelScore, 350, 300);
 		}
-		var continueBt = game.add.button(400, 500, 'continueBt', this.nextLevel, this, 0, 1, 2);
-		continueBt.anchor.setTo(0.5, 0.5);
+		var saveBt = game.add.button(400, 500, 'saveBt', this.saveGameScore, this, 0, 1, 2);
+		saveBt.anchor.setTo(0.5, 0.5);
+	},
+
+	saveGameScore: function() {
+		window.saveScore(currLevelScore);
 	},
 
 	placeNumSprite: function(num, x, y) {
@@ -374,6 +412,7 @@ level3.prototype = {
 	        inputArray[i] = currInputs[i];
 
 		if (sprite.key == "and-gate" && num == 1) {
+			currLevelScore -= timing[2];
 	        // only produce white when all are white
 	        result1 = this.andGateOutput(inputArray);
 	        for (i = 0; i < 4; i++)
@@ -384,6 +423,7 @@ level3.prototype = {
 			moveout1.onStart.add(function() {this.startAnimation(result1)}, this);
 			moveout1.onComplete.add(function() {this.stopAnimation(result1)}, this);
 	    } else if (sprite.key == "or-gate" && num == 1) {
+	    	currLevelScore -= timing[3];
 	        // only produce white when both are white
 	        result1 = this.orGateOutput(inputArray);
 	        for (i = 0; i < 4; i++)
@@ -394,6 +434,7 @@ level3.prototype = {
 			moveout2.onStart.add(function() {this.startAnimation(result1)}, this);
 			moveout2.onComplete.add(function() {this.stopAnimation(result1)}, this);
 	    } else if (sprite.key == "buffer-gate") {
+	    	currLevelScore -= timing[1];
 	    	finalRes = this.bufferGateOutput(result1);
 	    	result1.kill();
 	        this.setSpriteParams(finalRes, 450, 300, 100, 100);
@@ -402,6 +443,7 @@ level3.prototype = {
 			moveout3.onStart.add(function() {this.startAnimation(finalRes)}, this);
 			moveout3.onComplete.add(function() {this.judgment()}, this);
 	    } else if (sprite.key == "not-gate") {
+	    	currLevelScore -= timing[0];
 	    	finalRes = this.notGateOutput(result1);
 	    	result1.kill();
 	        this.setSpriteParams(finalRes, 450, 300, 100, 100);

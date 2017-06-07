@@ -1,10 +1,3 @@
-var notGate;
-var bufGate;
-var whiteBlk;
-var background;
-var blkWidth = 100;
-var blkHeight = 100;
-
 var smallBlkSize = 50;
 
 var zoneFilled = [false, false, false, false];
@@ -19,15 +12,14 @@ var result4;
 var finalRes;
 var enemies = [];
 
-var win;
-var loss;
+var win;							// the win text
+var loss;							// the loss text
+var retry;							// the retry button	
 
-var retry;
-
-var currLevelScore = 100;
-var timerCount = 110;			// leave 10 more seconds to operate
-var totalScore = 100;
-var timer;
+var currLevelScore = 100;			// the current level score
+var timerCount = 110;				// leave 10 more seconds to operate
+var timer;							// the timer of the game
+var timing = [];					// the timeing of each gate
 
 level5 = function(game) {};
 
@@ -39,7 +31,7 @@ level5.prototype = {
 	
 	create: function() {
 		// load the background
-		background = game.add.sprite(0, 0, 'background');
+		var background = game.add.sprite(0, 0, 'background');
 		background.width = 800;
 		background.height = 600;
 
@@ -78,19 +70,19 @@ level5.prototype = {
 		dropZones[4].x = 450;
 		dropZones[4].y = 342;
 
-		notGate = game.add.sprite(10, 15, 'not-gate');
+		var notGate = game.add.sprite(10, 15, 'not-gate');
 		notGate.width = smallBlkSize;
 		notGate.height = smallBlkSize;
 
-		bufGate = game.add.sprite(110, 15, 'buffer-gate');
+		var bufGate = game.add.sprite(110, 15, 'buffer-gate');
 		bufGate.width = smallBlkSize;
 		bufGate.height = smallBlkSize;
 
-		norGate = game.add.sprite(210, 15, 'nor-gate');
+		var norGate = game.add.sprite(210, 15, 'nor-gate');
 		norGate.width = smallBlkSize;
 		norGate.height = smallBlkSize;
 
-		xnorGate = game.add.sprite(310, 15, 'xnor-gate');
+		var xnorGate = game.add.sprite(310, 15, 'xnor-gate');
 		xnorGate.width = smallBlkSize;
 		xnorGate.height = smallBlkSize;
 
@@ -106,6 +98,9 @@ level5.prototype = {
 		xnorGate.inputEnabled = true;
 		xnorGate.events.onInputDown.add(this.onGateClick, this);
 
+		this.randomTimingGenerator(4);
+		this.putTimingOnGame(4);
+
 		this.randomInputGenerator(8);
 		for (i = 0; i < 8; i++) {
 			this.setSpriteParams(currInputs[i], 0, 150 + i * 50, smallBlkSize, smallBlkSize);
@@ -120,6 +115,43 @@ level5.prototype = {
 		timer = game.time.create(false);
 		timer.loop(1000, this.deductScore, this);
 		timer.start();
+	},
+
+	putTimingOnGame: function(num) {
+		for (i = 0; i < num; i++) {
+			var timingText;
+			switch(timing[i]) {
+				case 1:
+					timingText = game.add.sprite(10 + i * 100, 75, '1-text');
+					break;
+				case 2:
+					timingText = game.add.sprite(10 + i * 100, 75, '2-text');
+					break;
+				case 3:
+					timingText = game.add.sprite(10 + i * 100, 75, '3-text');
+					break;
+				case 4:
+					timingText = game.add.sprite(10 + i * 100, 75, '4-text');
+					break;
+				case 5:
+					timingText = game.add.sprite(10 + i * 100, 75, '5-text');
+					break;
+				case 6:
+					timingText = game.add.sprite(10 + i * 100, 75, '6-text');
+					break;
+				case 7:
+					timingText = game.add.sprite(10 + i * 100, 75, '7-text');
+					break;
+				case 8:
+					timingText = game.add.sprite(10 + i * 100, 75, '8-text');
+					break;
+				case 9:
+					timingText = game.add.sprite(10 + i * 100, 75, '9-text');
+					break;
+			}
+		}
+		timingText.width = smallBlkSize;
+		timingText.height = smallBlkSize;
 	},
 
 	clickHome: function() {
@@ -173,6 +205,14 @@ level5.prototype = {
 			}
 			enemies[i].animations.add('fly');
 			enemies[i].animations.play('fly', 1000, true);
+		}
+	},
+
+	randomTimingGenerator: function(num) {
+		var ranNum;
+		for (i = 0; i < num; i++) {
+			ranNum = Math.floor((Math.random() * 8) + 1)	// 1-9
+			timing[i] = ranNum;
 		}
 	},
 
@@ -351,8 +391,12 @@ level5.prototype = {
 		} else {
 			this.placeNumSprite(currLevelScore, 350, 300);
 		}
-		//var continueBt = game.add.button(400, 500, 'continueBt', this.nextLevel, this, 0, 1, 2);
-		//continueBt.anchor.setTo(0.5, 0.5);
+		var saveBt = game.add.button(400, 500, 'saveBt', this.saveGameScore, this, 0, 1, 2);
+		saveBt.anchor.setTo(0.5, 0.5);
+	},
+
+	saveGameScore: function() {
+		window.saveScore(currLevelScore);
 	},
 
 	placeNumSprite: function(num, x, y) {
@@ -462,6 +506,7 @@ level5.prototype = {
 	showResult: function(sprite, num) {
 		var inputArray = [];
 		if (sprite.key == "nor-gate") {
+			currLevelScore -= timing[2];
 	        // only produce white when both are white
 	        if (num == 1) {
 	            // input 0, 1, 2
@@ -517,6 +562,7 @@ level5.prototype = {
 				moveout1.onComplete.add(function() {this.stopAnimation(result4)}, this);
 	        }
 	    } else if (sprite.key == "xnor-gate") {
+	    	currLevelScore -= timing[3];
 	        if (num == 1) {
 	            // input 0, 1, 2
 	            inputArray[0] = currInputs[0];
@@ -571,6 +617,7 @@ level5.prototype = {
 				moveout1.onComplete.add(function() {this.stopAnimation(result4)}, this);
 	        }
 	    } else if (sprite.key == "buffer-gate" && num == 5) {
+	    	currLevelScore -= timing[1];
             finalRes = this.bufferGateOutput(result4);
             result4.kill();
             this.setSpriteParams(finalRes, 450, 342, smallBlkSize, smallBlkSize);
@@ -579,6 +626,7 @@ level5.prototype = {
 			moveout1.onComplete.add(function() {this.stopAnimation(finalRes)}, this);
 			moveout1.onComplete.add(function() {this.judgment()}, this);
 	    } else if (sprite.key == "not-gate" && num == 5) {
+	    	currLevelScore -= timing[0];
             finalRes = this.notGateOutput(result4);
             result4.kill();
             this.setSpriteParams(finalRes, 450, 342, smallBlkSize, smallBlkSize);
