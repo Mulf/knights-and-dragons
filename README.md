@@ -6,7 +6,18 @@ A mini game that simulates logic gates, written in JavaScript and Phaser library
 
 ## Motivation
 
-This game is one of the inital three games on [Bytes Hunter](https://bytehunter308.appspot.com "Bytes Hunter - A Computer Science Game Plantform")
+This game is one of the inital three games on [Bytes Hunter](https://bytehunter308.appspot.com "Bytes Hunter - A Computer Science Game Plantform") (a game platform designed to help students learn basic computer science concepts). This platform is hosted on Google App Engine.
+
+## Platform
+
+You can access this game via [Bytes Hunter](https://bytehunter308.appspot.com "Bytes Hunter - A Computer Science Game Plantform")
+The **Bytes Hunter** is the senior group project at Stony Brook University
+
+The four group members are:
+* [Luming Wu](https://github.com/LumingWu)
+* [Xinwen Wang](https://github.com/JASONews)
+* [Hongyang Zheng](https://github.com/yangmcy)
+* [Yida Yuan](https://github.com/yida-yuan)
 
 ## Screenshot
 
